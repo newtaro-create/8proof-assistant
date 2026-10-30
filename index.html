@@ -72,9 +72,6 @@
             <button id="btn-change-image" class="text-xs px-2.5 py-1 rounded bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 border border-slate-200 transition flex items-center gap-1">
               <span>📷</span> <span>図の変更</span>
             </button>
-            <button id="btn-toggle-marks" class="text-xs px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1">
-              <span id="mark-icon">👁️</span> <span id="mark-text">図の印を表示</span>
-            </button>
           </div>
         </div>
 
@@ -235,11 +232,14 @@
               </div>
             </div>
 
-            <div class="flex items-center gap-3 pt-2">
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3 pt-2">
               <button type="button" id="btn-check-l1" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-lg shadow transition text-sm flex items-center justify-center gap-1.5">
                 <span>✅</span> 答え合わせをする
               </button>
-              <button type="button" id="btn-reset-l1" class="px-4 py-2.5 border border-slate-300 text-slate-600 hover:bg-slate-100 rounded-lg text-sm font-medium transition">
+              <button type="button" id="btn-hint-l1" class="bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 font-bold py-2.5 px-3.5 rounded-lg transition text-xs sm:text-sm flex items-center justify-center gap-1">
+                <span>💡</span> ヒントをもらう
+              </button>
+              <button type="button" id="btn-reset-l1" class="px-3.5 py-2.5 border border-slate-300 text-slate-600 hover:bg-slate-100 rounded-lg text-xs sm:text-sm font-medium transition">
                 リセット
               </button>
             </div>
@@ -318,7 +318,7 @@
                 <span class="text-xs font-bold text-indigo-700">④ 結論</span>
                 <button type="button" class="btn-step-hint text-xs text-indigo-600 hover:text-indigo-800 underline" data-hint="step4">💡 ヒント</button>
               </div>
-              <input type="text" id="l2-input-step4" placeholder="△◯◯ ≡ △△△（または辺や角の結論）" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              <textarea id="l2-input-step4" rows="2" placeholder="△◯◯ ≡ △△△（辺や角を証明する場合は、続けて「合同な図形の対応する辺は等しいから、…」と書く）" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none font-mono"></textarea>
               <div id="hint-box-step4" class="hidden mt-2 p-2 bg-yellow-50 text-yellow-800 text-xs rounded border border-yellow-200"></div>
             </div>
 
@@ -592,7 +592,7 @@
           { type: "対頂角は等しいから", eq: "∠AOD = ∠BOC", side: "角" }
         ],
         image: "q1.png",
-        svg: function(showMarks) {
+        svg: function() {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
               <line x1="100" y1="45" x2="220" y2="45" stroke="#4f46e5" stroke-width="2.5" />
@@ -623,11 +623,7 @@
               <line x1="107" y1="146" x2="115" y2="138" stroke="#0284c7" stroke-width="2" />
               <line x1="111" y1="150" x2="119" y2="142" stroke="#0284c7" stroke-width="2" />
 
-              ${showMarks ? `
-                <path d="M 148 100 A 18 18 0 0 1 172 100" fill="none" stroke="#10b981" stroke-width="2.5" />
-                <path d="M 148 120 A 18 18 0 0 1 172 120" fill="none" stroke="#10b981" stroke-width="2.5" />
-                <text x="178" y="112" font-size="10" fill="#10b981" font-weight="bold">対頂角</text>
-              ` : ''}
+              
             </svg>
           `;
         }
@@ -649,7 +645,7 @@
           { type: "対頂角は等しいから", eq: "∠AMC = ∠BMD", side: "角" }
         ],
         image: "q2.png",
-        svg: function(showMarks) {
+        svg: function() {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
               <line x1="70" y1="50" x2="40" y2="175" stroke="#4f46e5" stroke-width="2.5" />
@@ -680,11 +676,7 @@
               <path d="M 45 155 A 20 20 0 0 1 58 165" fill="none" stroke="#0284c7" stroke-width="2" />
               <path d="M 235 60 A 20 20 0 0 1 245 70" fill="none" stroke="#0284c7" stroke-width="2" />
 
-              ${showMarks ? `
-                <path d="M 148 102 A 18 18 0 0 1 152 122" fill="none" stroke="#10b981" stroke-width="2.5" />
-                <path d="M 172 118 A 18 18 0 0 1 168 98" fill="none" stroke="#10b981" stroke-width="2.5" />
-                <text x="175" y="90" font-size="10" fill="#10b981" font-weight="bold">対頂角</text>
-              ` : ''}
+              
             </svg>
           `;
         }
@@ -706,7 +698,7 @@
           { type: "共通な辺だから", eq: "AD = AD", side: "辺" }
         ],
         image: "q3.png",
-        svg: function(showMarks) {
+        svg: function() {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
               <polygon points="160,25 60,170 160,120" fill="none" stroke="#334155" stroke-width="2" />
@@ -733,9 +725,7 @@
               <line x1="107" y1="148" x2="113" y2="142" stroke="#0284c7" stroke-width="2" />
               <line x1="207" y1="142" x2="213" y2="148" stroke="#0284c7" stroke-width="2" />
 
-              ${showMarks ? `
-                <text x="165" y="75" font-size="10" fill="#10b981" font-weight="bold">共通な辺</text>
-              ` : ''}
+              
             </svg>
           `;
         }
@@ -757,7 +747,7 @@
           { type: "共通な辺だから", eq: "OC = OC", side: "辺" }
         ],
         image: "q4.png",
-        svg: function(showMarks) {
+        svg: function() {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
               <line x1="50" y1="180" x2="160" y2="30" stroke="#334155" stroke-width="2" />
@@ -781,11 +771,7 @@
               <circle cx="215" cy="100" r="4" fill="#1e293b" />
               <text x="225" y="105" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">C</text>
 
-              ${showMarks ? `
-                <line x1="70" y1="147" x2="76" y2="143" stroke="#0284c7" stroke-width="2" />
-                <line x1="100" y1="177" x2="105" y2="183" stroke="#0284c7" stroke-width="2" />
-                <text x="120" y="130" font-size="10" fill="#10b981" font-weight="bold">共通な辺 OC</text>
-              ` : ''}
+              
             </svg>
           `;
         }
@@ -807,7 +793,7 @@
           { type: "平行線の錯角は等しいから", eq: "∠EAD = ∠EBC", side: "角" }
         ],
         image: "q5.png",
-        svg: function(showMarks) {
+        svg: function() {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
               <line x1="90" y1="45" x2="230" y2="45" stroke="#4f46e5" stroke-width="2.5" />
@@ -832,13 +818,7 @@
               <line x1="121" y1="73" x2="129" y2="83" stroke="#0284c7" stroke-width="2" />
               <line x1="176" y1="138" x2="184" y2="148" stroke="#0284c7" stroke-width="2" />
 
-              ${showMarks ? `
-                <path d="M 106 45 A 16 16 0 0 1 100 57" fill="none" stroke="#f59e0b" stroke-width="2.5" />
-                <path d="M 184 175 A 16 16 0 0 1 190 163" fill="none" stroke="#f59e0b" stroke-width="2.5" />
-                <text x="110" y="35" font-size="10" fill="#f59e0b" font-weight="bold">錯角</text>
-                <path d="M 148 100 A 18 18 0 0 1 172 100" fill="none" stroke="#10b981" stroke-width="2.5" />
-                <path d="M 148 120 A 18 18 0 0 1 172 120" fill="none" stroke="#10b981" stroke-width="2.5" />
-              ` : ''}
+              
             </svg>
           `;
         }
@@ -860,7 +840,7 @@
           { type: "対頂角は等しいから", eq: "∠AOC = ∠BOD", side: "角" }
         ],
         image: "q6.png",
-        svg: function(showMarks) {
+        svg: function() {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
               <line x1="80" y1="45" x2="40" y2="175" stroke="#4f46e5" stroke-width="2.5" />
@@ -886,11 +866,7 @@
               <line x1="197" y1="81" x2="205" y2="73" stroke="#0284c7" stroke-width="2" />
               <line x1="201" y1="85" x2="209" y2="77" stroke="#0284c7" stroke-width="2" />
 
-              ${showMarks ? `
-                <path d="M 148 102 A 18 18 0 0 1 152 122" fill="none" stroke="#10b981" stroke-width="2.5" />
-                <path d="M 172 118 A 18 18 0 0 1 168 98" fill="none" stroke="#10b981" stroke-width="2.5" />
-                <text x="175" y="90" font-size="10" fill="#10b981" font-weight="bold">対頂角</text>
-              ` : ''}
+              
             </svg>
           `;
         }
@@ -912,7 +888,7 @@
           { type: "対頂角は等しいから", eq: "∠AOC = ∠BOD", side: "角" }
         ],
         image: "q7.png",
-        svg: function(showMarks) {
+        svg: function() {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
               <line x1="30" y1="45" x2="290" y2="45" stroke="#cbd5e1" stroke-width="1.5" />
@@ -944,11 +920,7 @@
               <line x1="89" y1="146" x2="97" y2="138" stroke="#0284c7" stroke-width="2" />
               <line x1="93" y1="150" x2="101" y2="142" stroke="#0284c7" stroke-width="2" />
 
-              ${showMarks ? `
-                <path d="M 134 100 A 18 18 0 0 1 156 100" fill="none" stroke="#10b981" stroke-width="2.5" />
-                <path d="M 134 120 A 18 18 0 0 1 156 120" fill="none" stroke="#10b981" stroke-width="2.5" />
-                <text x="210" y="70" font-size="10" fill="#64748b" font-weight="bold">ノートの罫線（平行）</text>
-              ` : ''}
+              
             </svg>
           `;
         }
@@ -970,7 +942,7 @@
           { type: "共通な辺だから", eq: "BC = CB", side: "辺" }
         ],
         image: "q8.png",
-        svg: function(showMarks) {
+        svg: function() {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
               <polygon points="60,50 70,180 250,180" fill="none" stroke="#334155" stroke-width="2" />
@@ -988,15 +960,7 @@
               <circle cx="250" cy="180" r="4" fill="#1e293b" />
               <text x="260" y="195" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">C</text>
 
-              ${showMarks ? `
-                <line x1="60" y1="115" x2="70" y2="115" stroke="#0284c7" stroke-width="2" />
-                <line x1="250" y1="115" x2="260" y2="115" stroke="#0284c7" stroke-width="2" />
-                <line x1="152" y1="110" x2="160" y2="118" stroke="#0284c7" stroke-width="2" />
-                <line x1="155" y1="107" x2="163" y2="115" stroke="#0284c7" stroke-width="2" />
-                <line x1="156" y1="120" x2="164" y2="112" stroke="#0284c7" stroke-width="2" />
-                <line x1="159" y1="123" x2="167" y2="115" stroke="#0284c7" stroke-width="2" />
-                <text x="135" y="200" font-size="10" fill="#10b981" font-weight="bold">共通な辺 BC</text>
-              ` : ''}
+              
             </svg>
           `;
         }
@@ -1018,7 +982,7 @@
           { type: "共通な角だから", eq: "∠BAC = ∠DAE", side: "角" }
         ],
         image: "q9.png",
-        svg: function(showMarks) {
+        svg: function() {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
               <line x1="50" y1="110" x2="250" y2="40" stroke="#334155" stroke-width="2" />
@@ -1037,14 +1001,7 @@
               <circle cx="250" cy="180" r="4" fill="#1e293b" />
               <text x="255" y="195" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">B</text>
 
-              ${showMarks ? `
-                <line x1="147" y1="72" x2="153" y2="78" stroke="#0284c7" stroke-width="2" />
-                <line x1="147" y1="148" x2="153" y2="142" stroke="#0284c7" stroke-width="2" />
-                <path d="M 235 174 A 20 20 0 0 1 243 162" fill="none" stroke="#f59e0b" stroke-width="2.5" />
-                <path d="M 235 46 A 20 20 0 0 1 243 58" fill="none" stroke="#f59e0b" stroke-width="2.5" />
-                <path d="M 72 102 A 25 25 0 0 1 72 118" fill="none" stroke="#10b981" stroke-width="2.5" />
-                <text x="75" y="114" font-size="10" fill="#10b981" font-weight="bold">共通な角</text>
-              ` : ''}
+              
             </svg>
           `;
         }
@@ -1066,8 +1023,8 @@
           { type: "対頂角は等しいから", eq: "∠AMP = ∠BMQ", side: "角" },
           { type: "平行線の錯角は等しいから", eq: "∠PAM = ∠QBM", side: "角" }
         ],
-        image: "q8.png",
-        svg: function(showMarks) {
+        image: "q10.png",
+        svg: function() {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
               <!-- Parallel line l (y=50) and m (y=170) -->
@@ -1110,17 +1067,7 @@
               <line x1="109" y1="76" x2="116" y2="84" stroke="#ef4444" stroke-width="2.5" />
               <line x1="184" y1="136" x2="191" y2="144" stroke="#ef4444" stroke-width="2.5" />
 
-              ${showMarks ? `
-                <!-- Vertical angles at M -->
-                <path d="M 142 102 A 16 16 0 0 1 154 98" fill="none" stroke="#10b981" stroke-width="2.5" />
-                <path d="M 158 118 A 16 16 0 0 1 146 122" fill="none" stroke="#10b981" stroke-width="2.5" />
-                <text x="165" y="112" font-size="10" fill="#10b981" font-weight="bold">対頂角</text>
-
-                <!-- Alternate interior angles at A and B -->
-                <path d="M 90 50 A 18 18 0 0 1 85 58" fill="none" stroke="#f59e0b" stroke-width="2.5" />
-                <path d="M 210 170 A 18 18 0 0 1 215 162" fill="none" stroke="#f59e0b" stroke-width="2.5" />
-                <text x="80" y="36" font-size="10" fill="#f59e0b" font-weight="bold">錯角</text>
-              ` : ''}
+              
             </svg>
           `;
         }
@@ -1142,8 +1089,8 @@
           { type: "仮定（垂直）より", eq: "∠PMA = ∠PMB", side: "角" },
           { type: "共通な辺だから", eq: "PM = PM", side: "辺" }
         ],
-        image: "q9.png",
-        svg: function(showMarks) {
+        image: "q11.png",
+        svg: function() {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
               <!-- Vertical line l (x=160) -->
@@ -1182,9 +1129,7 @@
               <!-- Red right angle mark at M -->
               <path d="M 160 160 L 170 160 L 170 170" fill="none" stroke="#ef4444" stroke-width="2" />
 
-              ${showMarks ? `
-                <text x="168" y="115" font-size="11" fill="#10b981" font-weight="bold">共通な辺 PM</text>
-              ` : ''}
+              
             </svg>
           `;
         }
@@ -1193,8 +1138,7 @@
 
     // --- State ---
     let currentProblem = PROBLEMS[0];
-    let showMarks = false;
-    let currentMode = 1;
+        let currentMode = 1;
     let apiKey = "";
     let teacherPassword = "math"; // Default teacher password
 
@@ -1214,8 +1158,6 @@
     const problemHypotheses = document.getElementById("problem-hypotheses");
     const problemConclusion = document.getElementById("problem-conclusion");
     const detailsHypoConc = document.getElementById("details-hypo-conc");
-    const btnToggleMarks = document.getElementById("btn-toggle-marks");
-    const markText = document.getElementById("mark-text");
     const btnChangeImage = document.getElementById("btn-change-image");
 
     const tabMode1 = document.getElementById("tab-mode-1");
@@ -1347,18 +1289,24 @@
           <div class="relative w-full h-full flex flex-col items-center justify-center p-1">
             <img id="figure-img-element" src="${customImg}" alt="${currentProblem.title}の図" class="max-h-[220px] max-w-full object-contain rounded-lg border border-slate-200 bg-white shadow-sm" onerror="this.style.display='none'; document.getElementById('svg-fallback-box').style.display='block';">
             <div id="svg-fallback-box" style="display:none;" class="w-full h-full flex items-center justify-center">
-              ${currentProblem.svg(showMarks)}
+              ${currentProblem.svg()}
             </div>
           </div>
         `;
       } else {
-        figureContainer.innerHTML = currentProblem.svg(showMarks);
+        figureContainer.innerHTML = currentProblem.svg();
       }
     }
 
-    // --- Setup Level 1 Dropdown Options ---
+    // --- Setup Level 1 Dropdown Options (Pedagogically Curated for Student C) ---
     function setupLevel1Options() {
-      const triOptions = ["選択してください", currentProblem.tri1, currentProblem.tri2, "ABC", "ACD", "AOD", "BOC", "ACM", "BDM", "ABD", "AOC", "BOC", "AED", "BEC", "ACO", "BDO", "DCB", "ADE", "APM", "BQM", "PAM", "PBM"];
+      // Curate distraction options around currentProblem's vertices so Student B/C must check vertex correspondence!
+      const p1 = currentProblem.tri1;
+      const p2 = currentProblem.tri2;
+      const p1Perm = p1[0] + p1[2] + p1[1]; // swapped last two vertices
+      const p2Perm = p2[0] + p2[2] + p2[1]; // swapped last two vertices
+      const p2Perm2 = p2[1] + p2[0] + p2[2]; // swapped first two vertices
+      const triOptions = ["選択してください", p1, p2, p1Perm, p2Perm, p2Perm2];
       const uniqueTri = [...new Set(triOptions)];
 
       const populateSelect = (el, arr) => {
@@ -1374,36 +1322,29 @@
       populateSelect(l1Tri1, uniqueTri);
       populateSelect(l1Tri2, uniqueTri);
 
-      // Reasons
-      const reasonOptions = [
+      // Core 6 reasons + current problem's exact reason labels (avoids overwhelming Student C)
+      const baseReasons = [
         "選択してください",
         "仮定より",
-        "仮定（中点）より",
-        "仮定（垂直）より",
-        "仮定（二等分線）より",
-        "作図より",
+        ...currentProblem.reasons.map(r => r.type),
         "対頂角は等しいから",
         "平行線の錯角は等しいから",
         "平行線の同位角は等しいから",
-        "共通な角だから",
-        "共通な辺だから"
+        "共通な辺だから",
+        "共通な角だから"
       ];
-      populateSelect(l1Reason1, reasonOptions);
-      populateSelect(l1Reason2, reasonOptions);
-      populateSelect(l1Reason3, reasonOptions);
+      const uniqueReasons = [...new Set(baseReasons)];
+      populateSelect(l1Reason1, uniqueReasons);
+      populateSelect(l1Reason2, uniqueReasons);
+      populateSelect(l1Reason3, uniqueReasons);
 
-      // Equations
+      // Equations: current problem's 3 equations + plausible distractors using current problem's letters
       const eqOptions = [
         "選択してください",
         ...currentProblem.reasons.map(r => r.eq),
-        "AB = AC",
-        "AD = BC",
-        "OA = OD",
-        "AM = BM",
-        "PM = PM",
-        "∠A = ∠B",
-        "∠C = ∠C",
-        "∠PMA = ∠PMB"
+        `${p1[0]}${p1[1]} = ${p2[0]}${p2[2]}`,
+        `${p1[1]}${p1[2]} = ${p2[0]}${p2[1]}`,
+        `∠${p1} = ∠${p2Perm}`
       ];
       const uniqueEq = [...new Set(eqOptions)];
       populateSelect(l1Eq1, uniqueEq);
@@ -1419,27 +1360,27 @@
       ];
       populateSelect(l1Condition, condOptions);
 
-      // Conclusions (Supports direct congruence OR corresponding parts)
+      // Conclusions
       const isCorrespondingPart = !currentProblem.conclusion.includes("△");
       let concOptions = [];
       if (isCorrespondingPart) {
         concOptions = [
           "選択してください",
-          `△${currentProblem.tri1} ≡ △${currentProblem.tri2} より、対応する辺は等しいから ${currentProblem.conclusion}`,
-          `△${currentProblem.tri1} ≡ △${currentProblem.tri2}`,
-          `△${currentProblem.tri1} ＝ △${currentProblem.tri2}`,
-          `AM ＝ BM`
+          `△${p1} ≡ △${p2} より、対応する辺は等しいから ${currentProblem.conclusion}`,
+          `△${p1} ≡ △${p2Perm} より、対応する辺は等しいから ${currentProblem.conclusion}`,
+          `△${p1} ≡ △${p2}`,
+          `△${p1} ＝ △${p2}`
         ];
       } else {
         concOptions = [
           "選択してください",
           currentProblem.conclusion,
-          `△${currentProblem.tri1} ＝ △${currentProblem.tri2}`,
-          `△${currentProblem.tri1} ∽ △${currentProblem.tri2}`,
-          `AB ＝ CD`
+          `△${p1} ≡ △${p2Perm}`,
+          `△${p1} ＝ △${p2}`,
+          `△${p1} ∽ △${p2}`
         ];
       }
-      populateSelect(l1Conclusion, concOptions);
+      populateSelect(l1Conclusion, [...new Set(concOptions)]);
     }
 
     // --- Mode Switching ---
@@ -1462,12 +1403,6 @@
     tabMode2.addEventListener("click", () => setMode(2));
     tabMode3.addEventListener("click", () => setMode(3));
 
-    // Toggle Marks on Figure
-    btnToggleMarks.addEventListener("click", () => {
-      showMarks = !showMarks;
-      markText.textContent = showMarks ? "図の印を隠す" : "図の印を表示";
-      renderFigure();
-    });
 
     // Problem Change
     problemSelect.addEventListener("change", (e) => {
@@ -1483,6 +1418,11 @@
       const s1u = s1.toUpperCase();
       const s2u = s2.toUpperCase();
 
+      const sortStr = s => s.split("").sort().join("");
+      const validSet1 = (sortStr(s1u) === sortStr(t1u) && sortStr(s2u) === sortStr(t2u));
+      const validSet2 = (sortStr(s1u) === sortStr(t2u) && sortStr(s2u) === sortStr(t1u));
+      if (!validSet1 && !validSet2) return false;
+
       const corr = {};
       const rev = {};
       for (let i = 0; i < 3; i++) {
@@ -1495,7 +1435,570 @@
       return match1 || match2;
     }
 
-    // --- Level 1 Check Logic (AI-Powered Feedback) ---
+    // Helper: Check correspondence between two segments (e.g. OA = OB)
+    function checkSegmentCorrespondence(t1, t2, seg1, seg2) {
+      if (!seg1 || !seg2 || seg1.length !== 2 || seg2.length !== 2) return { status: "unknown" };
+      const s1 = seg1.toUpperCase();
+      const s2 = seg2.toUpperCase();
+      const t1u = t1.toUpperCase();
+      const t2u = t2.toUpperCase();
+
+      const sortStr = s => s.split("").sort().join("");
+      if (sortStr(s1) === sortStr(s2) && s1.split("").every(c => t1u.includes(c) && t2u.includes(c))) {
+        const corr = {};
+        for (let i = 0; i < 3; i++) corr[t1u[i]] = t2u[i];
+        const expExact = corr[s1[0]] + corr[s1[1]];
+        if (s2 === expExact) return { status: "exact", expected: expExact, isCommon: true };
+        return { status: "reversed", expected: expExact, isCommon: true };
+      }
+
+      const corr = {};
+      const rev = {};
+      for (let i = 0; i < 3; i++) {
+        corr[t1u[i]] = t2u[i];
+        rev[t2u[i]] = t1u[i];
+      }
+
+      if (s1.split("").every(c => t1u.includes(c)) && s2.split("").every(c => t2u.includes(c))) {
+        const expExact = corr[s1[0]] + corr[s1[1]];
+        const expFlipped = corr[s1[1]] + corr[s1[0]];
+        if (s2 === expExact) return { status: "exact", expected: expExact };
+        if (s2 === expFlipped) return { status: "reversed", expected: expExact };
+        return { status: "mismatch", expected: expExact };
+      }
+
+      if (s1.split("").every(c => t2u.includes(c)) && s2.split("").every(c => t1u.includes(c))) {
+        const expExact = rev[s1[0]] + rev[s1[1]];
+        const expFlipped = rev[s1[1]] + rev[s1[0]];
+        if (s2 === expExact) return { status: "exact", expected: expExact };
+        if (s2 === expFlipped) return { status: "reversed", expected: expExact };
+        return { status: "mismatch", expected: expExact };
+      }
+
+      return { status: "unknown" };
+    }
+
+    // Helper: Check correspondence between two 3-letter angles (e.g. ∠AOD = ∠BOC)
+    function checkAngleCorrespondence(t1, t2, ang1, ang2) {
+      if (!ang1 || !ang2 || ang1.length !== 3 || ang2.length !== 3) return { status: "unknown" };
+      const a1 = ang1.toUpperCase();
+      const a2 = ang2.toUpperCase();
+      const t1u = t1.toUpperCase();
+      const t2u = t2.toUpperCase();
+
+      const corr = {};
+      const rev = {};
+      for (let i = 0; i < 3; i++) {
+        corr[t1u[i]] = t2u[i];
+        rev[t2u[i]] = t1u[i];
+      }
+
+      const checkMap = (src, dst, m) => {
+        if (!a1.split("").every(c => src.includes(c)) || !a2.split("").every(c => dst.includes(c))) return null;
+        if ((new Set(a1)).size !== 3 || (new Set(a2)).size !== 3) return null;
+        const expExact = m[a1[0]] + m[a1[1]] + m[a1[2]];
+        const expFlipped = m[a1[2]] + m[a1[1]] + m[a1[0]];
+        if (a2 === expExact) return { status: "exact", expected: expExact };
+        if (a2 === expFlipped) return { status: "reversed", expected: expExact };
+        return { status: "mismatch", expected: expExact };
+      };
+
+      return checkMap(t1u, t2u, corr) || checkMap(t2u, t1u, rev) || { status: "unknown" };
+    }
+
+    // Helper: Check if a line contains an expected equation (allowing valid mathematical variations)
+    function doesEquationMatchExpected(prob, expReason, text) {
+      const cleanText = text.replace(/\s+/g, "").replace(/＝/g, "=").toUpperCase();
+      const expEq = expReason.eq.replace(/\s+/g, "").toUpperCase();
+
+      if (cleanText.includes(expEq)) return { matched: true, quality: "exact" };
+
+      // Common side (e.g. AD = AD, BC = CB, ADは共通)
+      if (expReason.type.includes("共通") && expReason.side === "辺") {
+        const parts = expEq.split("=");
+        const seg = parts[0];
+        const expRight = parts[1];
+        const revSeg = seg[1] + seg[0];
+        const revRight = expRight[1] + expRight[0];
+
+        // Exact correspondence patterns (including textbook "〇〇は共通")
+        const exactPatterns = [
+          `${seg}=${expRight}`, `${revSeg}=${revRight}`,
+          `${seg}は共通`, `${revSeg}は共通`, `辺${seg}は共通`, `辺${revSeg}は共通`
+        ];
+        if (exactPatterns.some(p => cleanText.includes(p))) return { matched: true, quality: "exact" };
+
+        // Reversed vertex order on common side (e.g., BC = BC when expEq is BC = CB in Prob 8)
+        const revPatterns = [`${seg}=${seg}`, `${revSeg}=${revSeg}`, `${seg}=${revSeg}`, `${revSeg}=${seg}`];
+        if (revPatterns.some(p => cleanText.includes(p))) return { matched: true, quality: "reversed_common" };
+      }
+
+      // Common angle (e.g. ∠BAC = ∠DAE or ∠Aは共通)
+      if (expReason.type.includes("共通") && expReason.side === "角") {
+        const m = expEq.match(/∠([A-Z])([A-Z])([A-Z])=∠([A-Z])([A-Z])([A-Z])/);
+        if (m) {
+          const v = m[2];
+          const a1 = m[1]+m[2]+m[3], a1r = m[3]+m[2]+m[1];
+          const a2 = m[4]+m[5]+m[4+2], a2r = m[6]+m[5]+m[4];
+          const exactPatterns = [
+            `∠${a1}=∠${a2}`, `∠${a1r}=∠${a2r}`, `∠${a2}=∠${a1}`, `∠${a2r}=∠${a1r}`,
+            `∠${v}は共通`, `∠${v}=∠${v}`, `角${v}は共通`
+          ];
+          if (exactPatterns.some(p => cleanText.includes(p))) return { matched: true, quality: "exact" };
+          const revPatterns = [`∠${a1}=∠${a2r}`, `∠${a1r}=∠${a2}`];
+          if (revPatterns.some(p => cleanText.includes(p))) return { matched: true, quality: "reversed" };
+        }
+      }
+
+      // Non-common side equality (e.g. OA = OB, AO = BO)
+      if (expReason.side === "辺" && !expReason.type.includes("共通")) {
+        const parts = expEq.split("=");
+        if (parts.length === 2 && parts[0].length === 2 && parts[1].length === 2) {
+          const L = parts[0], R = parts[1];
+          const Lr = L[1]+L[0], Rr = R[1]+R[0];
+          const exactPatterns = [`${L}=${R}`, `${Lr}=${Rr}`, `${R}=${L}`, `${Rr}=${Lr}`];
+          if (exactPatterns.some(p => cleanText.includes(p))) return { matched: true, quality: "exact" };
+          const revPatterns = [`${L}=${Rr}`, `${Lr}=${R}`, `${R}=${Lr}`, `${Rr}=${L}`];
+          if (revPatterns.some(p => cleanText.includes(p))) return { matched: true, quality: "reversed" };
+        }
+      }
+
+      // Non-common angle equality (e.g. ∠AOD = ∠BOC, ∠DOA = ∠COB, or 1-letter ∠B = ∠D)
+      if (expReason.side === "角" && !expReason.type.includes("共通")) {
+        const m = expEq.match(/∠([A-Z]{3})=∠([A-Z]{3})/);
+        if (m) {
+          const L = m[1], R = m[2];
+          const Lr = L[2]+L[1]+L[0], Rr = R[2]+R[1]+R[0];
+          const exactPatterns = [`∠${L}=∠${R}`, `∠${Lr}=∠${Rr}`, `∠${R}=∠${L}`, `∠${Rr}=∠${Lr}`];
+          if (exactPatterns.some(p => cleanText.includes(p))) return { matched: true, quality: "exact" };
+          const revPatterns = [`∠${L}=∠${Rr}`, `∠${Lr}=∠${R}`, `∠${R}=∠${Lr}`, `∠${Rr}=∠${L}`];
+          if (revPatterns.some(p => cleanText.includes(p))) return { matched: true, quality: "reversed" };
+
+          const v1 = L[1], v2 = R[1];
+          if (v1 !== v2) {
+            if (cleanText.includes(`∠${v1}=∠${v2}`) || cleanText.includes(`∠${v2}=∠${v1}`)) {
+              return { matched: true, quality: "shorthand" };
+            }
+          }
+        }
+      }
+
+      return { matched: false };
+    }
+
+    function extractReasonKeywords(text) {
+      const kws = [];
+      if (text.includes("仮定") || text.includes("中点") || text.includes("二等分")) kws.push("仮定");
+      if (text.includes("垂直") || text.includes("90°") || text.includes("90度") || text.includes("直角")) kws.push("垂直");
+      if (text.includes("作図") || text.includes("半径")) kws.push("作図");
+      if (text.includes("対頂角")) kws.push("対頂角");
+      if (text.includes("錯角")) kws.push("錯角");
+      if (text.includes("同位角")) kws.push("同位角");
+      if (text.includes("共通")) kws.push("共通");
+      return kws;
+    }
+
+    function checkReasonCompatibility(prob, expReason, reasonKws) {
+      const expType = expReason.type;
+      if (expType.includes("共通")) {
+        if (reasonKws.includes("共通")) return { ok: true };
+        if (reasonKws.length === 0) {
+          return { ok: false, severity: "missing_reason", msg: `💡 <strong>理由の補足</strong>：『${expReason.eq}』には、「共通な${expReason.side}だから」という理由を書き添えよう！` };
+        }
+        return {
+          ok: false,
+          severity: "wrong_reason",
+          msg: `⚠️ <strong>根拠（理由）の見直し</strong>：『${expReason.eq}』の理由として「${reasonKws.join("・")}」が使われていますが、図を見ると2つの三角形がぴったり重なっている${expReason.side}ですね。何という理由になるかな？`
+        };
+      }
+
+      if (expType.includes("対頂角")) {
+        if (reasonKws.includes("対頂角")) return { ok: true };
+        if (reasonKws.length === 0) {
+          return { ok: false, severity: "missing_reason", msg: `💡 <strong>理由の補足</strong>：『${expReason.eq}』の前に、なぜその角が等しいのか（向かい合った角の性質）を書き添えるとさらに説得力が出ます！` };
+        }
+        return {
+          ok: false,
+          severity: "wrong_reason",
+          msg: `⚠️ <strong>根拠（理由）の見直し</strong>：『${expReason.eq}』の理由が「${reasonKws.join("・")}」になっています。この角は問題文の仮定ではなく、2本の直線が交わってできる向かい合った角ですね。何という角の性質かな？`
+        };
+      }
+
+      if (expType.includes("錯角")) {
+        if (reasonKws.includes("錯角")) return { ok: true };
+        if (reasonKws.includes("同位角")) {
+          return {
+            ok: false,
+            severity: "wrong_reason",
+            msg: `⚠️ <strong>根拠（理由）の見直し</strong>：『${expReason.eq}』の理由が「同位角」になっていますが、図を見ると平行線の間で直線をまたいだ「Zの字」の位置にある角ですね。もう一つの角の名前は何だったかな？`
+          };
+        }
+        if (reasonKws.length === 0) {
+          return { ok: false, severity: "missing_reason", msg: `💡 <strong>理由の補足</strong>：『${expReason.eq}』の前に、平行線のどの角の性質を使ったか（『平行線の錯角は等しいから』など）を書き添えよう！` };
+        }
+        return {
+          ok: false,
+          severity: "wrong_reason",
+          msg: `⚠️ <strong>根拠（理由）の見直し</strong>：『${expReason.eq}』は平行線の間にある「Zの字」の角ですね。「${reasonKws.join("・")}」ではなく、平行線の何という角の性質かな？`
+        };
+      }
+
+      if (expType.includes("垂直")) {
+        if (reasonKws.includes("垂直") || reasonKws.includes("仮定")) return { ok: true };
+        if (reasonKws.length === 0) {
+          return { ok: false, severity: "missing_reason", msg: `💡 <strong>理由の補足</strong>：『${expReason.eq}』には「仮定（垂直二等分線）より」などの理由を添えよう！` };
+        }
+        return {
+          ok: false,
+          severity: "wrong_reason",
+          msg: `⚠️ <strong>根拠（理由）の見直し</strong>：『${expReason.eq}』は垂直二等分線（仮定）から90°と分かる角ですね。「${reasonKws.join("・")}」ではなく「仮定より」としよう！`
+        };
+      }
+
+      if (expType.includes("作図")) {
+        if (reasonKws.includes("作図") || reasonKws.includes("仮定")) return { ok: true };
+        if (reasonKws.length === 0) {
+          return { ok: false, severity: "missing_reason", msg: `💡 <strong>理由の補足</strong>：『${expReason.eq}』の前に「作図より（または仮定より）」と理由を書き添えよう！` };
+        }
+        return {
+          ok: false,
+          severity: "wrong_reason",
+          msg: `⚠️ <strong>根拠（理由）の見直し</strong>：『${expReason.eq}』はコンパスの等しい半径でかいた辺ですね。「${reasonKws.join("・")}」ではなく「作図より（または仮定より）」としよう！`
+        };
+      }
+
+      if (reasonKws.includes("仮定")) return { ok: true };
+      if (reasonKws.length === 0) {
+        return { ok: false, severity: "missing_reason", msg: `💡 <strong>理由の補足</strong>：『${expReason.eq}』の前に「仮定より、」と理由を書き添えると、根拠がはっきりしてさらに良くなります！` };
+      }
+      return {
+        ok: false,
+        severity: "wrong_reason",
+        msg: `⚠️ <strong>根拠（理由）の見直し</strong>：式『${expReason.eq}』の理由が「${reasonKws.join("・")}」になっていますが、これは最初から問題文や図で与えられている条件ですね。何と書けばよいかな？`
+      };
+    }
+
+    function checkCongruenceConditionInText(prob, text) {
+      const clean = text.replace(/\s+/g, "");
+      const hasCond1 = clean.includes("3組の辺") || clean.includes("三組の辺");
+      const hasCond2 = clean.includes("2組の辺") || clean.includes("二組の辺");
+      const hasCond3 = clean.includes("1組の辺") || clean.includes("一組の辺") || clean.includes("2組の角") || clean.includes("二組の角");
+
+      if (!hasCond1 && !hasCond2 && !hasCond3) {
+        return { status: "missing", msg: "・見つけた3つの根拠から言える『三角形の合同条件（〜それぞれ等しいから、）』を書きましょう。" };
+      }
+
+      const expCond = prob.condition;
+      if (expCond.includes("3組の辺")) {
+        if (hasCond1) return { status: "ok" };
+        return {
+          status: "wrong",
+          msg: `⚠️ <strong>合同条件の見直し</strong>：合同条件に『${hasCond2 ? "2組の辺..." : "1組の辺..."}』と書かれていますが、①, ②, ③で集めた等式を見てみましょう。3つともすべて【辺】の式ですね！ぴったりの合同条件はどれかな？`
+        };
+      }
+      if (expCond.includes("2組の辺")) {
+        if (hasCond2) {
+          if (!clean.includes("その間")) {
+            return {
+              status: "incomplete",
+              msg: `💡 <strong>合同条件の重要キーワード</strong>：『2組の辺』を使った合同条件では、<strong>「その間の角」</strong>という言葉が不可欠です！『2組の辺とその間の角がそれぞれ等しい』と正確に書こう！`
+            };
+          }
+          return { status: "ok" };
+        }
+        return {
+          status: "wrong",
+          msg: `⚠️ <strong>合同条件の見直し</strong>：①, ②, ③で集めた等式を数えてみましょう。【辺が2組】と、その間にある【角が1組】ですね！それに合う合同条件に直してみよう！`
+        };
+      }
+      if (expCond.includes("1組の辺")) {
+        if (hasCond3) {
+          if (!clean.includes("その両端")) {
+            return {
+              status: "incomplete",
+              msg: `💡 <strong>合同条件の重要キーワード</strong>：『1組の辺』を使った合同条件では、<strong>「その両端の角」</strong>という言葉が不可欠です！『1組の辺とその両端の角がそれぞれ等しい』と正確に書こう！`
+            };
+          }
+          return { status: "ok" };
+        }
+        return {
+          status: "wrong",
+          msg: `⚠️ <strong>合同条件の見直し</strong>：①, ②, ③で集めた等式を数えてみましょう。【辺が1組】と、その両端にある【角が2組】ですね！それに合う合同条件に直してみよう！`
+        };
+      }
+      return { status: "ok" };
+    }
+
+    function analyzeProofFull(prob, proof) {
+      const cleanProof = proof.replace(/\s+/g, "");
+      const lines = proof.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+
+      const triDeclareLine = lines.find(l => l.includes("△") && (l.includes("において") || l.includes("と") || l.includes("で")));
+      const triCongLine = lines.find(l => l.includes("≡"));
+
+      let isOpeningTriOk = false;
+      let openingTriMsg = "";
+      let declaredTri1 = "";
+      let declaredTri2 = "";
+
+      if (triDeclareLine) {
+        const m = [...triDeclareLine.matchAll(/△\s*([A-Za-z]{3})/g)];
+        if (m.length >= 2) {
+          declaredTri1 = m[0][1].toUpperCase();
+          declaredTri2 = m[1][1].toUpperCase();
+          isOpeningTriOk = checkTriangleCorrespondence(prob.tri1, prob.tri2, declaredTri1, declaredTri2);
+          if (isOpeningTriOk) {
+            openingTriMsg = `✅ <strong>着目する三角形と対応順</strong>：バッチリ合っています！（△${declaredTri1} と △${declaredTri2}）`;
+          } else {
+            openingTriMsg = `⚠️ <strong>着目する三角形の対応順</strong>：『△${declaredTri1} と △${declaredTri2}』となっています。△${declaredTri1}の1文字目（点${declaredTri1[0]}）に対応する頂点、2文字目（点${declaredTri1[1]}）に対応する頂点を図で確認し、対応する順番に並べてみよう！`;
+          }
+        } else {
+          openingTriMsg = `💡 <strong>書き出しの宣言</strong>：『△◯◯ と △△△ において、』のように2つの三角形を並べて書こう！`;
+        }
+      } else {
+        openingTriMsg = `💡 <strong>書き出しの宣言</strong>：まず最初に『△… と △… において、』と着目する2つの三角形を宣言しよう！`;
+      }
+
+      let logicErrors = [];
+      let brushUpTips = [];
+      let goodFindings = [];
+      let hasAngleCorrError = false;
+      let hasSideCorrError = false;
+
+      const matchedExpCount = new Array(prob.reasons.length).fill(0);
+      let carriedReasonKws = [];
+      let carriedReasonUsed = false;
+
+      lines.forEach(line => {
+        if (line === triDeclareLine || line === triCongLine) return;
+        if (line.includes("組の辺") || line.includes("組の角") || line.includes("合同な図形") || line.includes("対応する辺") || line.includes("対応する角")) return;
+
+        const lineKws = extractReasonKeywords(line);
+        const hasEq = line.includes("=") || line.includes("＝") || line.includes("は共通");
+
+        if (!hasEq) {
+          if (lineKws.length > 0) {
+            carriedReasonKws = lineKws;
+            carriedReasonUsed = false;
+          }
+          return;
+        }
+
+        let activeKws = [];
+        let isInherited = false;
+        if (lineKws.length > 0) {
+          activeKws = lineKws;
+          if (!lineKws.includes("共通")) {
+            carriedReasonKws = lineKws;
+            carriedReasonUsed = true;
+          }
+        } else if (carriedReasonKws.length > 0) {
+          activeKws = carriedReasonKws;
+          isInherited = carriedReasonUsed;
+          carriedReasonUsed = true;
+        }
+
+        const isFinalConclusionLine = (!prob.conclusion.includes("△") && line.replace(/\s+/g, "").replace(/＝/g, "=").toUpperCase().includes(prob.conclusion.replace(/\s+/g, "").toUpperCase()));
+        if (isFinalConclusionLine && (line.includes("よって") || line.includes("したがって") || line.includes("ゆえに") || lines.indexOf(line) > lines.indexOf(triCongLine))) {
+          return;
+        }
+
+        let matchedAnyExpOnLine = false;
+        prob.reasons.forEach((exp, idx) => {
+          const mRes = doesEquationMatchExpected(prob, exp, line);
+          if (mRes.matched) {
+            matchedExpCount[idx]++;
+            matchedAnyExpOnLine = true;
+
+            if (mRes.quality === "reversed_common") {
+              brushUpTips.push(`💡 <strong>共通な辺の対応順ブラッシュアップ</strong>：共通な辺は、対応する頂点の順番に合わせて『${exp.eq}』（または『${exp.eq.split(" = ")[0]}は共通』）と書くと、さらに洗練された満点の証明になります！`);
+            } else if (mRes.quality === "shorthand") {
+              const mAng = exp.eq.match(/∠([A-Z]{3})/);
+              if (mAng) {
+                const v = mAng[1][1];
+                if (["O", "M", "E"].includes(v)) {
+                  brushUpTips.push(`💡 <strong>角の表し方のヒント</strong>：点${v}のまわりには複数の角があるため、『∠${v}』ではなく3つのアルファベットを使って『${exp.eq}』のように表すとより正確です！`);
+                }
+              }
+            }
+
+            const rCheck = checkReasonCompatibility(prob, exp, activeKws);
+            if (!rCheck.ok) {
+              if (rCheck.severity === "wrong_reason") {
+                if (isInherited) {
+                  brushUpTips.push(`💡 <strong>理由の書き分け</strong>：『${exp.eq}』の前に、なぜ等しいのか（仮定以外の理由）を書き添えて前の式と区別しよう！`);
+                } else {
+                  logicErrors.push(rCheck.msg);
+                }
+              } else if (rCheck.severity === "missing_reason") {
+                brushUpTips.push(rCheck.msg);
+              }
+            }
+          }
+        });
+
+        // Inspect explicit angle equalities ∠XYZ = ∠UVW on this line
+        const angMatches = [...line.matchAll(/∠\s*([A-Za-z]{3})\s*[=＝]\s*∠\s*([A-Za-z]{3})/g)];
+        angMatches.forEach(am => {
+          const a1 = am[1].toUpperCase(), a2 = am[2].toUpperCase();
+          const aRes = checkAngleCorrespondence(prob.tri1, prob.tri2, a1, a2);
+          if (aRes.status === "mismatch") {
+            hasAngleCorrError = true;
+            logicErrors.push(`⚠️ <strong>角の対応順の見直し</strong>：『∠${a1} = ∠${a2}』と書かれていますが、∠${a1}（頂点は真ん中の点${a1[1]}）に対応する角になるよう、頂点の対応順を見直してみよう！`);
+          } else if (!matchedAnyExpOnLine) {
+            logicErrors.push(`⚠️ <strong>使えない角の式（根拠の見直し）</strong>：『∠${a1} = ∠${a2}』は仮定や図の性質からまだ言えない角です。問題文の仮定や、対頂角・平行線の錯角・共通な角から等しいと言える角を探そう！`);
+          } else if (aRes.status === "reversed") {
+            brushUpTips.push(`💡 <strong>角の対応順の改善</strong>：『∠${a1} = ∠${a2}』は角としては同じですが、対応する頂点の順に『∠${a1} = ∠${aRes.expected}』と揃えるとさらに美しいです！`);
+          } else if (aRes.status === "exact") {
+            goodFindings.push(`✅ <strong>角の対応順</strong>：『∠${a1} = ∠${a2}』は対応順がバッチリ揃っています！`);
+          }
+        });
+
+        // Inspect explicit segment equalities XY = ZW on this line
+        const lineWithoutAnglesAndTris = line.replace(/∠\s*[A-Za-z]{1,3}/g, "").replace(/△\s*[A-Za-z]{3}/g, "");
+        const segMatches = [...lineWithoutAnglesAndTris.matchAll(/([A-Za-z]{2})\s*[=＝]\s*([A-Za-z]{2})/g)];
+        segMatches.forEach(sm => {
+          const s1 = sm[1].toUpperCase(), s2 = sm[2].toUpperCase();
+          const sRes = checkSegmentCorrespondence(prob.tri1, prob.tri2, s1, s2);
+          if (sRes.status === "mismatch") {
+            hasSideCorrError = true;
+            logicErrors.push(`⚠️ <strong>辺の対応の見直し</strong>：『${s1} = ${s2}』と書かれていますが、辺${s1}と辺${s2}は対応する辺同士になっていません。図の同じ印がついた辺（または対応する頂点順）をもう一度確認しよう！`);
+          } else if (!matchedAnyExpOnLine) {
+            logicErrors.push(`⚠️ <strong>使えない辺の式（根拠の見直し）</strong>：『${s1} = ${s2}』はこれから証明したい結論そのもの（または仮定からまだ言えない辺）なので、証明の根拠には使えません！最初から分かっている仮定や共通な辺を使おう！`);
+          } else if (sRes.status === "exact") {
+            goodFindings.push(`✅ <strong>辺の対応順</strong>：『${s1} = ${s2}』は対応順が綺麗に揃っています！`);
+          } else if (sRes.status === "reversed" && !sRes.isCommon) {
+            brushUpTips.push(`💡 <strong>辺の対応順の改善</strong>：『${s1} = ${s2}』は、点${s1[0]}に対応する頂点を先に書いて『${s1} = ${sRes.expected}』とすると対応順がさらに美しく整います！`);
+          }
+        });
+
+        if (segMatches.length > 0 && angMatches.length === 0 && !line.includes("∠")) {
+          if (lineKws.includes("対頂角") || lineKws.includes("錯角") || lineKws.includes("同位角")) {
+            logicErrors.push(`⚠️ <strong>根拠と式の不一致</strong>：『${line}』とありますが、「${lineKws.join("・")}」は【角（∠）】の性質なので、辺の長さの理由には使えません。`);
+          }
+        }
+      });
+
+      // Check duplicate equations
+      prob.reasons.forEach((exp, idx) => {
+        if (matchedExpCount[idx] > 1) {
+          logicErrors.push(`⚠️ <strong>等式の重複</strong>：『${exp.eq}』が複数回書かれています。異なる3つの根拠を揃えましょう！`);
+        }
+      });
+
+      // Check missing expected reasons (with specific hints when 1 of 2 hypotheses is missing)
+      let missingReasonsHints = [];
+      prob.reasons.forEach((exp, idx) => {
+        if (matchedExpCount[idx] === 0) {
+          if (exp.side === "角" && hasAngleCorrError) return;
+          if (exp.side === "辺" && hasSideCorrError) return;
+
+          if (exp.type.includes("対頂角")) {
+            missingReasonsHints.push("・2本の直線が交わってできる向かい合った角（対頂角）についての等式");
+          } else if (exp.type.includes("共通")) {
+            missingReasonsHints.push(`・2つの三角形がぴったり重なっている「共通な${exp.side}」についての等式`);
+          } else if (exp.type.includes("錯角")) {
+            missingReasonsHints.push("・平行線の間にある「Zの字」の角（平行線の錯角）についての等式");
+          } else if (exp.type.includes("垂直") || exp.type.includes("90")) {
+            missingReasonsHints.push("・垂直二等分線によってできる直角（90°）についての等式");
+          } else if (exp.type.includes("中点") || exp.type.includes("二等分")) {
+            missingReasonsHints.push("・中点（または二等分線）によって2等分された辺についての等式");
+          } else if (exp.type.includes("作図")) {
+            const pts = exp.eq.replace(/[^A-Z]/g, "");
+            missingReasonsHints.push(`・コンパスで等しい半径をとった辺の等式（点${pts[0]}と点${pts[1]}を結ぶ辺に注目！）`);
+          } else {
+            const pts = exp.eq.replace(/[^A-Z]/g, "");
+            missingReasonsHints.push(`・仮定から等しいと分かる${exp.side}の等式（点${pts[0]}や点${pts[1]}をふくむ${exp.side}に注目！）`);
+          }
+        }
+      });
+
+      // Check equation numbering (①, ②, ③ or (1), (2), (3))
+      const matchedTotal = matchedExpCount.filter(c => c > 0).length;
+      const hasEqNumbers = (proof.includes("①") && proof.includes("②") && proof.includes("③")) ||
+                           (proof.includes("(1)") && proof.includes("(2)") && proof.includes("(3)")) ||
+                           (proof.includes("（1）") && proof.includes("（2）") && proof.includes("（3）"));
+      if (matchedTotal === 3 && !hasEqNumbers) {
+        brushUpTips.push(`💡 <strong>番号（①, ②, ③）の活用</strong>：3つの等式の後ろに『… ①』『… ②』『… ③』と番号をつけ、合同条件の前に『①, ②, ③より、』と書くと、どの式を根拠にしたかが明確になり、さらに説得力のある証明になります！`);
+      }
+
+      const condCheck = checkCongruenceConditionInText(prob, proof);
+      if (condCheck.status === "wrong") {
+        logicErrors.push(condCheck.msg);
+      } else if (condCheck.status === "incomplete") {
+        brushUpTips.push(condCheck.msg);
+      }
+
+      let isConclusionOk = false;
+      let conclusionMsg = "";
+      if (triCongLine) {
+        const cm = [...triCongLine.matchAll(/△\s*([A-Za-z]{3})/g)];
+        if (cm.length >= 2) {
+          const c1 = cm[0][1].toUpperCase(), c2 = cm[1][1].toUpperCase();
+          const isCongCorr = checkTriangleCorrespondence(prob.tri1, prob.tri2, c1, c2);
+          if (!isCongCorr) {
+            logicErrors.push(`⚠️ <strong>結論の対応順の見直し</strong>：結論が『△${c1} ≡ △${c2}』となっていますが、対応する頂点の順番がズレています。最初の宣言と同じく対応順を揃えて結ぼう！`);
+          } else {
+            // Check consistency between declared triangle order (declaredTri1, declaredTri2) and conclusion order (c1, c2)
+            if (isOpeningTriOk && (declaredTri1 !== c1 || declaredTri2 !== c2)) {
+              brushUpTips.push(`💡 <strong>宣言と結論の表記揃え</strong>：書き出しで『△${declaredTri1} と △${declaredTri2} において』と宣言しているので、結論も同じ順番・同じ頂点表記で『△${declaredTri1} ≡ △${declaredTri2}』と揃えると、一貫性のあるさらに美しい証明になります！`);
+            }
+
+            if (!prob.conclusion.includes("△")) {
+              const targetParts = prob.conclusion.replace(/\s+/g, "").split("=");
+              const L = targetParts[0], R = targetParts[1];
+              const Lr = L[1]+L[0], Rr = R[1]+R[0];
+              const afterCongText = lines.slice(lines.indexOf(triCongLine)).join("\n").replace(/\s+/g, "").replace(/＝/g, "=").toUpperCase();
+              const hasFinalSide = [
+                `${L}=${R}`, `${Lr}=${Rr}`, `${R}=${L}`, `${Rr}=${Lr}`,
+                `${L}=${Rr}`, `${Lr}=${R}`
+              ].some(p => afterCongText.includes(p));
+              const hasCorrSideReason = cleanProof.includes("対応する辺") || cleanProof.includes("合同な図形");
+              if (hasFinalSide && hasCorrSideReason) {
+                isConclusionOk = true;
+              } else if (hasFinalSide && !hasCorrSideReason) {
+                isConclusionOk = true;
+                brushUpTips.push(`💡 <strong>結論の理由を補おう</strong>：『${prob.conclusion}』の前に、「合同な図形の対応する辺は等しいから、」という言葉を添えると満点の証明になります！`);
+              } else {
+                brushUpTips.push(`💡 <strong>あと1行でゴール！</strong>：『△${c1} ≡ △${c2}』までバッチリ証明できています！最後に「合同な図形の対応する辺は等しいから、${prob.conclusion}」と結んで完成させよう！`);
+              }
+            } else {
+              isConclusionOk = true;
+            }
+          }
+        }
+      } else {
+        conclusionMsg = `・最後に合同記号『≡』を使って『△… ≡ △…』と結論を結びましょう。`;
+      }
+
+      return {
+        isOpeningTriOk,
+        openingTriMsg,
+        logicErrors: [...new Set(logicErrors)],
+        brushUpTips: [...new Set(brushUpTips)],
+        goodFindings: [...new Set(goodFindings)],
+        missingReasonsHints: [...new Set(missingReasonsHints)],
+        matchedCount: matchedTotal,
+        condStatus: condCheck.status,
+        condMsg: condCheck.msg,
+        isConclusionOk,
+        conclusionMsg
+      };
+    }
+
+    // --- Level 1 Check & Hint Logic (AI-Powered Socratic Feedback) ---
+    const btnHintL1 = document.getElementById("btn-hint-l1");
+    if (btnHintL1) {
+      btnHintL1.addEventListener("click", () => {
+        const prob = currentProblem;
+        const hintHtml = getProblemSpecificStepHint(prob, "all");
+        renderL1AiResponse({
+          boxClass: "bg-indigo-50 border-indigo-200 text-indigo-950",
+          text: `💡 <strong>【${prob.badge}】考え方のステップガイド：</strong><br>${hintHtml}`
+        });
+      });
+    }
+
     btnCheckL1.addEventListener("click", async () => {
       const t1 = l1Tri1.value;
       const t2 = l1Tri2.value;
@@ -1509,18 +2012,34 @@
       const conc = l1Conclusion.value;
 
       if (!t1 || !t2 || !r1 || !e1 || !r2 || !e2 || !r3 || !e3 || !cond || !conc) {
-        showL1Feedback("warning", `
-          <div class="flex items-start gap-2.5">
-            <div class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">AI</div>
-            <div class="text-xs sm:text-sm text-amber-900 leading-relaxed font-medium">
-              まだ選ばれていない項目があります。すべてのマスを選択してから答え合わせをしましょう！
-            </div>
-          </div>
-        `);
+        let partialPraise = [];
+        let nextStepGuide = "";
+        if (t1 && t2) {
+          if (t1 === currentProblem.tri1 && t2 === currentProblem.tri2) {
+            partialPraise.push(`✅ <strong>ステップ1（△${t1} と △${t2}）</strong>：対応順までバッチリ合っています！`);
+          } else if (checkTriangleCorrespondence(currentProblem.tri1, currentProblem.tri2, t1, t2)) {
+            partialPraise.push(`💡 <strong>ステップ1（△${t1} と △${t2}）</strong>：対応順は合っています！ただ、下の選択肢の式（${currentProblem.reasons[0].eq}など）に合わせて、左右を<strong>『△${currentProblem.tri1} と △${currentProblem.tri2}』</strong>の順にしておこう！`);
+          } else {
+            partialPraise.push(`⚠️ <strong>ステップ1（△${t1} と △${t2}）</strong>：対応する頂点の順番（点${t1[0]}に対応する頂点はどれかな？）をもう一度図で確認してみよう！`);
+          }
+        }
+        if (!t1 || !t2) {
+          nextStepGuide = getProblemSpecificStepHint(currentProblem, "step1");
+        } else if (!r1 || !e1 || !r2 || !e2 || !r3 || !e3) {
+          nextStepGuide = getProblemSpecificStepHint(currentProblem, "step2");
+        } else if (!cond) {
+          nextStepGuide = getProblemSpecificStepHint(currentProblem, "step3");
+        } else {
+          nextStepGuide = getProblemSpecificStepHint(currentProblem, "step4");
+        }
+
+        renderL1AiResponse({
+          boxClass: "bg-amber-50 border-amber-200 text-amber-950",
+          text: `${partialPraise.length > 0 ? partialPraise.join("<br>") + "<br><br>" : ""}🌱 <strong>まだ選んでいないマスがあります！次のステップのヒントを参考にしてみてね：</strong><br>${nextStepGuide}`
+        });
         return;
       }
 
-      // Show AI loading state
       l1Feedback.className = "rounded-lg p-3 text-xs sm:text-sm leading-relaxed block border bg-indigo-50 border-indigo-200 text-indigo-900";
       l1Feedback.innerHTML = `
         <div class="flex items-center gap-2 italic">
@@ -1545,11 +2064,10 @@
         }
       }
 
-      // Local Pedagogical Rule Engine for Level 1
       setTimeout(() => {
         const localResponse = generateLocalLevel1Advice(studentProofData);
         renderL1AiResponse(localResponse);
-      }, 500);
+      }, 450);
     });
 
     btnResetL1.addEventListener("click", () => {
@@ -1571,67 +2089,134 @@
 
     function generateLocalLevel1Advice(data) {
       const prob = currentProblem;
-      const validTriOrder = checkTriangleCorrespondence(prob.tri1, prob.tri2, data.tri1, data.tri2);
+      const exactTriOrder = (data.tri1 === prob.tri1 && data.tri2 === prob.tri2);
+      const swappedTriOrder = (data.tri1 === prob.tri2 && data.tri2 === prob.tri1);
 
-      const expectedEqs = prob.reasons.map(r => r.eq);
       const studentEqs = [data.e1, data.e2, data.e3];
-      const allEqsFound = expectedEqs.every(exp => studentEqs.includes(exp));
+      const hasDuplicates = (new Set(studentEqs)).size !== studentEqs.length;
+
+      const studentPairs = [
+        { num: "①", r: data.r1, e: data.e1 },
+        { num: "②", r: data.r2, e: data.e2 },
+        { num: "③", r: data.r3, e: data.e3 }
+      ];
+
+      let reasonErrors = [];
+      let matchedExpIndices = new Set();
+
+      studentPairs.forEach((pair) => {
+        let matchedExp = null;
+        let matchedIdx = -1;
+        prob.reasons.forEach((exp, j) => {
+          if (exp.eq.replace(/\s+/g, "") === pair.e.replace(/\s+/g, "")) {
+            matchedExp = exp;
+            matchedIdx = j;
+          }
+        });
+
+        if (!matchedExp) {
+          reasonErrors.push(`・<strong>${pair.num}の等式『${pair.e}』</strong>：図や対応する頂点の順番をよく見てみよう。この問題で等しいと言えるペアになっているかな？`);
+          return;
+        }
+
+        matchedExpIndices.add(matchedIdx);
+
+        const expType = matchedExp.type;
+        const studentR = pair.r;
+        let isReasonCorrect = false;
+
+        if (expType.includes("共通")) {
+          isReasonCorrect = studentR.includes("共通");
+          if (!isReasonCorrect) {
+            reasonErrors.push(`・<strong>${pair.num}の理由の見直し</strong>：式『${pair.e}』に対して「${studentR}」が選ばれていますが、図を見ると2つの三角形がぴったり重なり合っている${matchedExp.side}ですね。どんな理由を選べばよいかな？`);
+          }
+        } else if (expType.includes("対頂角")) {
+          isReasonCorrect = studentR.includes("対頂角");
+          if (!isReasonCorrect) {
+            reasonErrors.push(`・<strong>${pair.num}の理由の見直し</strong>：式『${pair.e}』は問題文の仮定には書かれていませんね。2本の直線が交わってできる「向かい合った角」のことを何と言ったかな？`);
+          }
+        } else if (expType.includes("錯角")) {
+          isReasonCorrect = studentR.includes("錯角");
+          if (!isReasonCorrect) {
+            reasonErrors.push(`・<strong>${pair.num}の理由の見直し</strong>：式『${pair.e}』は、平行線の間で「Zの字」の位置にある角ですね。「${studentR}」ではなく、平行線のどの角の性質かな？`);
+          }
+        } else if (expType.includes("作図")) {
+          isReasonCorrect = (studentR.includes("作図") || studentR.includes("仮定"));
+          if (!isReasonCorrect) {
+            reasonErrors.push(`・<strong>${pair.num}の理由の見直し</strong>：式『${pair.e}』はコンパスで等しい半径をとって作図した辺ですね。「${studentR}」ではなくどの理由になるかな？`);
+          }
+        } else {
+          isReasonCorrect = (studentR.includes("仮定") || studentR.includes("中点") || studentR.includes("垂直") || studentR.includes("二等分"));
+          if (!isReasonCorrect) {
+            reasonErrors.push(`・<strong>${pair.num}の理由の見直し</strong>：式『${pair.e}』は、最初から問題文や図で与えられている条件ですね。「${studentR}」ではなく何という理由を選べばよいかな？`);
+          }
+        }
+      });
+
+      if (hasDuplicates) {
+        reasonErrors.push("・<strong>等式の重複</strong>：①, ②, ③の中に同じ等式が2回以上選ばれています。3つとも異なる等式を選びましょう。");
+      }
 
       const validCond = (data.condition === prob.condition);
-      
+
       const isCorrespondingPart = !prob.conclusion.includes("△");
       let validConc = false;
       if (isCorrespondingPart) {
-        validConc = data.conclusion.includes(prob.conclusion) && data.conclusion.includes("対応する辺");
+        validConc = data.conclusion.includes(prob.conclusion) && data.conclusion.includes("対応する辺") && data.conclusion.includes(`△${prob.tri1} ≡ △${prob.tri2}`);
       } else {
         validConc = (data.conclusion === prob.conclusion);
       }
 
-      if (validTriOrder && allEqsFound && validCond && validConc) {
+      const allReasonsCovered = (matchedExpIndices.size === prob.reasons.length);
+      const isPerfect = (exactTriOrder && !hasDuplicates && reasonErrors.length === 0 && allReasonsCovered && validCond && validConc);
+
+      if (isPerfect) {
         return {
           boxClass: "bg-emerald-50 border-emerald-200 text-emerald-950",
           text: `🎉 <strong>素晴らしい！完璧に正解です！</strong><br>
-            ・三角形の対応順（△${data.tri1} と △${data.tri2}）：完璧です！<br>
-            ・等しい3組の根拠と式：バッチリ揃っています！<br>
-            ・合同条件（${data.condition}）：正しく見抜けています！<br>
-            ・結論：論理の流れが美しく完結しています！<br><br>
-            証明の骨組みがしっかり身についていますね。次はぜひ<strong>『Lv.2 標準（ステップ型）』</strong>に進んで、自分の言葉でキーボード入力する練習に挑戦してみよう！`
+            ✅ <strong>ステップ1（△${data.tri1} と △${data.tri2}）</strong>：頂点の対応順もバッチリです！<br>
+            ✅ <strong>ステップ2（3つの根拠と式）</strong>：理由と等式が論理的に正しく結びついています！<br>
+            ✅ <strong>ステップ3（${data.condition}）</strong>：辺と角の組み合わせから正しく選べています！<br>
+            ✅ <strong>ステップ4（結論）</strong>：最後まで筋道が通っています！<br><br>
+            証明の型がしっかり身につきましたね！次は上のタブから<strong>『🌿 Lv.2 標準（ステップ型）』</strong>に進んで、自分の手で入力する練習に挑戦してみよう！`
         };
       }
 
-      // Socratic encouragement with specific guidance
       let hints = [];
-      if (!validTriOrder) {
-        hints.push(`・<strong>着目する三角形</strong>：頂点の対応順（点Aに対応する点など）を見直してみよう！（正解の組み合わせ：△${prob.tri1} と △${prob.tri2}）`);
+      if (swappedTriOrder) {
+        hints.push(`・<strong>ステップ1（左右の三角形の順番）</strong>：着目した2つの三角形（△${data.tri1} と △${data.tri2}）の対応は合っています！ただ、ステップ2の等式（${prob.reasons[0].eq}など）やステップ4の結論では<strong>「△${prob.tri1}」が左、「△${prob.tri2}」が右</strong>に書かれているので、ステップ1も左右を合わせて<strong>『△${prob.tri1} と △${prob.tri2} において』</strong>に揃えよう！`);
+      } else if (!exactTriOrder) {
+        hints.push(`・<strong>ステップ1（三角形の対応順）</strong>：『△${data.tri1} と △${data.tri2}』となっています。△${data.tri1}の1文字目（点${data.tri1[0]}）に対応する頂点、2文字目（点${data.tri1[1]}）に対応する頂点を図で確認し、同じ対応順に並べてみよう！`);
       }
-      if (!allEqsFound) {
-        hints.push(`・<strong>等しい3つの等式</strong>：図の印や問題文をよく見て、等しい辺や角の式を正しく選べているか見直してみよう。`);
+      if (reasonErrors.length > 0) {
+        hints.push(...reasonErrors);
       }
       if (!validCond) {
-        hints.push(`・<strong>合同条件</strong>：集めた3つの等式を数えてみてね（【辺】が何組、【角】が何組あるかな？）。それにぴったりの合同条件を選ぼう！`);
+        hints.push(`・<strong>ステップ3（合同条件）</strong>：①, ②, ③で選んだ3つの式を見てみよう。【辺】の式が何組、【角（∠）】の式が何組あるかな？その数にぴったり合う合同条件を選ぼう！`);
       }
       if (!validConc) {
         if (isCorrespondingPart) {
-          hints.push(`・<strong>結論</strong>：合同が導けた後、「対応する辺は等しいから ${prob.conclusion}」となる選択肢を選びましょう。`);
+          hints.push(`・<strong>ステップ4（結論）</strong>：対応順の正しい合同（△${prob.tri1} ≡ △${prob.tri2}）から、「対応する辺は等しいから ${prob.conclusion}」と結んでいる選択肢を選ぼう！`);
         } else {
-          hints.push(`・<strong>結論</strong>：最後は合同を表す記号「≡」を使った結論「${prob.conclusion}」を選びましょう。`);
+          hints.push(`・<strong>ステップ4（結論）</strong>：合同を表す記号は『≡』です。また、2つの三角形の頂点の対応順が揃っている選択肢を選ぼう！`);
         }
       }
 
       return {
         boxClass: "bg-amber-50 border-amber-200 text-amber-950",
-        text: `🌱 <strong>惜しい！あと少しで見直せますよ！</strong><br>
-          次のポイントをもう一度図と照らし合わせてみよう：<br>
+        text: `🌱 <strong>惜しい！次のヒントをもとに見直してみよう：</strong><br>
           ${hints.join("<br>")}<br>
-          <span class="text-indigo-700 font-semibold mt-1.5 block">💡 選び直したら、もう一度「答え合わせ」を押してみてね！</span>`
+          <span class="text-indigo-700 font-semibold mt-1.5 block">💡 修正したら、もう一度「答え合わせをする」を押してみてね！</span>`
       };
     }
 
     async function callGeminiApiForLevel1(data) {
       const prob = currentProblem;
-      const prompt = `生徒がレベル1（穴埋め選択問題）で以下の証明文を組み立てました。
+      const localCheck = generateLocalLevel1Advice(data);
+      const isSuccess = localCheck.boxClass.includes("emerald");
+      if (isSuccess) return localCheck;
 
-【生徒の解答内容】
+      const prompt = `生徒がレベル1（穴埋め選択問題）で以下の証明文を組み立てました。
 1. 着目する三角形：△${data.tri1} と △${data.tri2} において、
 2. 根拠①：${data.r1}より、${data.e1}
 3. 根拠②：${data.r2}より、${data.e2}
@@ -1639,21 +2224,20 @@
 5. 合同条件：①, ②, ③より、${data.condition}から、
 6. 結論：${data.conclusion}
 
-この解答を先生として温かく採点・アドバイスしてください。
-すべて正しければ大いに褒め、もし誤り（対応順のズレや等式の間違い、合同条件の選び間違いなど）があれば、答えそのものは言わずに生徒が自分で気づける優しいヒントを与えてください。150字程度で簡潔に返答してください。`;
+【自動検証で検出された見直し箇所】：
+${localCheck.text.replace(/<[^>]+>/g, "")}
 
-      const systemInstruction = `あなたは中学校数学科の温かい数学教師です。中学2年生が「4章 平行と合同」の単元で合同の証明（穴埋め選択問題）に取り組んでいます。
+上記の検出結果に基づき、答えそのものは直接教えずに、生徒が自分で気づいて選び直せるよう、温かくソクラテス式に150〜200字程度でアドバイスしてください。`;
+
+      const systemInstruction = `あなたは中学校数学科の温かい数学教師です。中学2年生が「4章 平行と合同」の単元で合同の証明に取り組んでいます。
 問題：${prob.badge} ${prob.title}
-問題文：${prob.text}
 着目三角形正解：△${prob.tri1} と △${prob.tri2}
-根拠正解例：${prob.reasons.map(r => r.type + ":" + r.eq).join(", ")}
+根拠正解：${prob.reasons.map(r => r.type + ":" + r.eq).join(", ")}
 合同条件正解：${prob.condition}
 結論正解：${prob.conclusion}
-
-生徒の選択内容を評価し、肯定的にアドバイスしてください。決して否定的な言葉は使わず、前向きに導いてください。`;
+必ず自動検証で検出された誤り（根拠と式の不一致や対応順のズレなど）について、生徒が思考できる問いかけの形で優しくヒントを出してください。`;
 
       const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1662,19 +2246,49 @@
           systemInstruction: { parts: [{ text: systemInstruction }] }
         })
       });
-
       if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
       const resData = await res.json();
       const answer = resData.candidates?.[0]?.content?.parts?.[0]?.text;
-      
-      const isSuccess = generateLocalLevel1Advice(data).boxClass.includes("emerald");
       return {
-        boxClass: isSuccess ? "bg-emerald-50 border-emerald-200 text-emerald-950" : "bg-amber-50 border-amber-200 text-amber-950",
-        text: answer ? answer.replace(/\n/g, "<br>") : generateLocalLevel1Advice(data).text
+        boxClass: "bg-amber-50 border-amber-200 text-amber-950",
+        text: answer ? answer.replace(/\n/g, "<br>") : localCheck.text
       };
     }
 
-    // --- Level 2 Step Hints & Validation ---
+    // --- Problem-Specific Socratic Step Hints (For Level 1 & Level 2 & Student C) ---
+    function getProblemSpecificStepHint(prob, step) {
+      const isCorrPart = !prob.conclusion.includes("△");
+      const h1 = isCorrPart
+        ? `① <strong>三角形の宣言</strong>：結論の「${prob.conclusion}」を導くために、その辺をふくむ2つの三角形（例えば △${prob.tri1} と、それに対応するもう1つの三角形）に着目して『△… と △… において、』と書こう！`
+        : `① <strong>三角形の宣言</strong>：問題文の結論にある2つの三角形に着目して、対応する頂点の順番を揃えて『△… と △… において、』と書こう！`;
+
+      const rHints = prob.reasons.map((r, i) => {
+        if (r.type.includes("対頂角")) return `・(${i+1}) 直線が交わってできる向かい合った角（<strong>対頂角</strong>）が等しいこと`;
+        if (r.type.includes("錯角")) return `・(${i+1}) 平行線の間にある「Zの字」の角（<strong>平行線の錯角</strong>）が等しいこと`;
+        if (r.type.includes("共通")) return `・(${i+1}) 2つの三角形がぴったり重なっている<strong>共通な${r.side}</strong>が等しいこと`;
+        if (r.type.includes("垂直")) return `・(${i+1}) 垂直二等分線（仮定）によってできる<strong>直角（90°）</strong>が等しいこと`;
+        if (r.type.includes("中点") || r.type.includes("二等分")) return `・(${i+1}) 中点・二等分線（<strong>仮定</strong>）によって2等分された${r.side}が等しいこと`;
+        if (r.type.includes("作図")) return `・(${i+1}) コンパスで等しい半径をとった（<strong>作図</strong>より分かる）辺が等しいこと`;
+        return `・(${i+1}) 問題文や図（<strong>仮定</strong>）から等しいと分かる${r.side}`;
+      }).join("<br>");
+      const h2 = `② <strong>3つの根拠と式</strong>：この問題では次の3つを式にして『… ①, ②, ③』と番号をつけよう！<br>${rHints}`;
+
+      const sideCount = prob.reasons.filter(r => r.side === "辺").length;
+      const angCount = prob.reasons.filter(r => r.side === "角").length;
+      const h3 = `③ <strong>合同条件</strong>：①, ②, ③で集めたのは<strong>【辺が${sideCount}組】</strong>と<strong>【角が${angCount}組】</strong>ですね！これに当てはまる三角形の合同条件を『①, ②, ③より、〜から、』と書こう！`;
+
+      const h4 = isCorrPart
+        ? `④ <strong>結論</strong>：まず『△… ≡ △…』と合同を結び、続けて『合同な図形の対応する辺は等しいから、${prob.conclusion}』と書けば完成です！`
+        : `④ <strong>結論</strong>：最後に合同を表す記号『≡』を使って、対応順を揃えて『${prob.conclusion}』と結ぼう！`;
+
+      if (step === "step1") return h1;
+      if (step === "step2") return h2;
+      if (step === "step3") return h3;
+      if (step === "step4") return h4;
+      return `${h1}<br><br>${h2}<br><br>${h3}<br><br>${h4}`;
+    }
+
+    // --- Level 2 Step Hints & Intelligent AI Validation ---
     document.querySelectorAll(".btn-step-hint").forEach(btn => {
       btn.addEventListener("click", (e) => {
         const step = e.target.getAttribute("data-hint");
@@ -1683,15 +2297,7 @@
 
         hintBox.classList.toggle("hidden");
         if (!hintBox.classList.contains("hidden")) {
-          if (step === "step1") {
-            hintBox.textContent = `💡 ヒント：問題の図や問題文を見て、合同を言いたい2つの三角形を探そう。頂点の対応順序に気をつけて「△… と △… において、」と書きます。`;
-          } else if (step === "step2") {
-            hintBox.textContent = `💡 ヒント：等しい理由には「仮定より」「対頂角は等しいから」「平行線の錯角は等しいから」「共通な辺だから」「共通な角だから」などがあります。図に印をつけながら3組見つけてみよう！`;
-          } else if (step === "step3") {
-            hintBox.textContent = `💡 ヒント：見つけた3つの等式は【辺】と【角】のどちらかな？辺が何組、角が何組あるか確認して、ぴったりの合同条件を選ぼう！`;
-          } else if (step === "step4") {
-            hintBox.textContent = `💡 ヒント：最後は合同を表す記号「≡」を結びます。辺や角の等しさを証明したいときは「合同な図形の対応する辺（角）は等しいから、…」と続けましょう。`;
-          }
+          hintBox.innerHTML = getProblemSpecificStepHint(currentProblem, step);
         }
       });
     });
@@ -1702,28 +2308,82 @@
       const s3 = l2InputStep3.value.trim();
       const s4 = l2InputStep4.value.trim();
 
-      let hints = [];
-      if (!s1.includes("△") || !s1.includes("において")) {
-        hints.push("・ステップ1：『△』記号と『において、』のキーワードを入れてみましょう。");
-      }
-      if (!s2.includes("①") || !s2.includes("②") || !s2.includes("③")) {
-        hints.push("・ステップ2：等しい3つの式に『… ①』『… ②』『… ③』と番号をつけましょう。理由（仮定より、対頂角〜など）も忘れずに！");
-      }
-      if (!s3.includes("それぞれ等しい") && !s3.includes("等しい")) {
-        hints.push(`・ステップ3：合同条件の言葉（〜それぞれ等しいから、）を正確に書けているか確認しましょう。`);
-      }
-      if (!s4.includes("≡") && !s4.includes("＝") && !s4.includes("=")) {
-        hints.push("・ステップ4：結論には『≡』または『＝』を使いましょう。");
+      if (!s1 && !s2 && !s3 && !s4) {
+        l2Feedback.className = "rounded-lg p-4 text-xs sm:text-sm leading-relaxed block border bg-indigo-50 border-indigo-200 text-indigo-950";
+        l2Feedback.innerHTML = `
+          <div class="flex items-start gap-2.5">
+            <div class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">AI</div>
+            <div class="flex-1 leading-relaxed">
+              まずは<strong>ステップ①（着目する三角形の宣言）</strong>から書いてみましょう！<br>
+              ${getProblemSpecificStepHint(currentProblem, "step1")}
+            </div>
+          </div>
+        `;
+        return;
       }
 
-      l2Feedback.className = "rounded-lg p-4 text-sm leading-relaxed block border";
-      if (hints.length === 0) {
-        l2Feedback.classList.add("bg-emerald-50", "border-emerald-200", "text-emerald-900");
-        l2Feedback.innerHTML = `🌟 とても素晴らしいです！全ステップの型がしっかり揃っています。「この内容をまとめてLv.3へ送る」ボタンを押すと、完全な証明文としてLv.3で確認・編集できます！`;
+      const fullText = [s1, s2, s3, s4].filter(Boolean).join("\n");
+      const diag = analyzeProofFull(currentProblem, fullText);
+
+      let stepFeedback = [];
+      if (!s1) {
+        stepFeedback.push(`・<strong>① 三角形の宣言</strong>：未入力です。${getProblemSpecificStepHint(currentProblem, "step1")}`);
       } else {
-        l2Feedback.classList.add("bg-amber-50", "border-amber-200", "text-amber-900");
-        l2Feedback.innerHTML = `アドバイス：<br>${hints.join("<br>")}`;
+        stepFeedback.push(diag.openingTriMsg);
       }
+
+      if (!s2) {
+        stepFeedback.push(`・<strong>② 3つの根拠</strong>：未入力です。<br>${getProblemSpecificStepHint(currentProblem, "step2")}`);
+      } else {
+        const s2Errors = diag.logicErrors.filter(e => !e.includes("合同条件") && !e.includes("結論"));
+        if (s2Errors.length > 0) {
+          stepFeedback.push(...s2Errors);
+        } else if (diag.missingReasonsHints.length > 0) {
+          stepFeedback.push(`💡 <strong>② 3つの根拠（あと${diag.missingReasonsHints.length}つ見つけよう）</strong>：<br>${diag.missingReasonsHints.join("<br>")}`);
+        } else {
+          stepFeedback.push(`✅ <strong>② 3つの根拠と等式</strong>：3組とも正しく書けています！`);
+        }
+      }
+
+      if (!s3) {
+        stepFeedback.push(`・<strong>③ 合同条件</strong>：未入力です。${getProblemSpecificStepHint(currentProblem, "step3")}`);
+      } else if (diag.condStatus === "wrong" || diag.condStatus === "missing") {
+        stepFeedback.push(diag.condMsg);
+      } else if (diag.condStatus === "incomplete") {
+        stepFeedback.push(diag.condMsg);
+      } else {
+        stepFeedback.push(`✅ <strong>③ 合同条件</strong>：『${currentProblem.condition}』が正しく書けています！`);
+      }
+
+      if (!s4) {
+        stepFeedback.push(`・<strong>④ 結論</strong>：未入力です。${getProblemSpecificStepHint(currentProblem, "step4")}`);
+      } else {
+        const s4Errors = diag.logicErrors.filter(e => e.includes("結論"));
+        if (s4Errors.length > 0) {
+          stepFeedback.push(...s4Errors);
+        } else if (!diag.isConclusionOk) {
+          const concTip = diag.brushUpTips.find(t => t.includes("ゴール") || t.includes("結論"));
+          stepFeedback.push(concTip || diag.conclusionMsg);
+        } else {
+          stepFeedback.push(`✅ <strong>④ 結論</strong>：対応順まで正しく結べています！`);
+        }
+      }
+
+      const otherTips = diag.brushUpTips.filter(t => !stepFeedback.includes(t));
+      const allOk = (diag.isOpeningTriOk && diag.logicErrors.length === 0 && diag.missingReasonsHints.length === 0 && (diag.condStatus === "ok" || diag.condStatus === "incomplete") && diag.isConclusionOk);
+
+      l2Feedback.className = "rounded-lg p-4 text-xs sm:text-sm leading-relaxed block border shadow-sm " + (allOk ? "bg-emerald-50 border-emerald-200 text-emerald-950" : "bg-amber-50 border-amber-200 text-amber-950");
+      l2Feedback.innerHTML = `
+        <div class="flex items-start gap-2.5">
+          <div class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">AI</div>
+          <div class="flex-1 leading-relaxed">
+            ${allOk
+              ? `🎉 <strong>素晴らしい！全ステップの論理がしっかり通っています！</strong><br>${stepFeedback.join("<br>")}${otherTips.length > 0 ? "<br><br><strong>【さらに磨くワンポイント】</strong>：<br>" + otherTips.join("<br>") : ""}<br><br>準備バッチリです！「📝 この内容をまとめてLv.3へ送る」ボタンを押して、1つの証明文にまとめよう！`
+              : `🌱 <strong>ステップごとのAIチェック結果：</strong><br>${stepFeedback.join("<br>")}${otherTips.length > 0 ? "<br>" + otherTips.join("<br>") : ""}`
+            }
+          </div>
+        </div>
+      `;
     });
 
     btnMergeToL3.addEventListener("click", () => {
@@ -1748,10 +2408,10 @@
       updateCharCount();
       setMode(3);
 
-      appendAiMessage(`Lv.2で入力したステップをLv.3にまとめました！文章のつながりや記号をチェックして、完成を目指そう！`);
+      appendAiMessage(`Lv.2で入力したステップをLv.3にまとめました！「✨ 診断＆ブラッシュアップ」ボタンを押して最終チェックをしてみよう！`);
     });
 
-        // --- Level 2 Symbol Palette (Dedicated Keypad) ---
+    // --- Level 2 Symbol Palette (Dedicated Keypad) ---
     let lastFocusedL2Input = l2InputStep1;
     [l2InputStep1, l2InputStep2, l2InputStep3, l2InputStep4].forEach(input => {
       input.addEventListener("focus", () => {
@@ -1812,7 +2472,6 @@
         const rawDataUrl = event.target.result;
         const img = new Image();
         img.onload = () => {
-          // Downscale to max 800px width/height to keep size under 100KB for localStorage
           const maxDim = 800;
           let w = img.width;
           let h = img.height;
@@ -1832,7 +2491,6 @@
           const ctx = canvas.getContext("2d");
           ctx.drawImage(img, 0, 0, w, h);
 
-          // Compress to lightweight JPEG or PNG
           const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.85);
 
           try {
@@ -1841,7 +2499,6 @@
             closeImageModal();
             appendAiMessage(`📷 【${currentProblem.badge}】の図を選択された画像に差し替えました！（軽量化して安全に保存しました）`);
           } catch (err) {
-            // Extreme fallback if localStorage is totally full
             appendAiMessage("⚠️ ブラウザの空き容量が不足しています。一度不要なデータを削除してお試しください。");
             closeImageModal();
           }
@@ -1855,7 +2512,6 @@
       reader.readAsDataURL(file);
     });
 
-    // GitHub path / URL save
     btnSaveImagePath.addEventListener("click", () => {
       const path = inputImagePath.value.trim();
       if (path) {
@@ -1867,7 +2523,6 @@
       }
     });
 
-    // Reset to default SVG
     btnResetDefaultFig.addEventListener("click", () => {
       localStorage.removeItem("custom_fig_" + currentProblem.id);
       localStorage.removeItem("custom_fig_path_" + currentProblem.id);
@@ -1891,7 +2546,7 @@
       aiChatBox.scrollTop = aiChatBox.scrollHeight;
     }
 
-    function appendAiMessage(text, isMarkdown = false) {
+    function appendAiMessage(text) {
       const div = document.createElement("div");
       div.className = "flex items-start gap-2 text-xs";
       div.innerHTML = `
@@ -1910,7 +2565,6 @@
       });
     }
 
-    // Quick Ask handler
     document.querySelectorAll(".btn-quick-ask").forEach(btn => {
       btn.addEventListener("click", async (e) => {
         const qType = e.currentTarget.getAttribute("data-question");
@@ -1943,7 +2597,6 @@
       }
     });
 
-    // Main Consultation Function
     async function handleAiConsultation(qType, question, studentProof) {
       const loadingDiv = document.createElement("div");
       loadingDiv.id = "ai-loading";
@@ -1954,7 +2607,7 @@
 
       if (apiKey) {
         try {
-          const response = await callGeminiApi(question, studentProof);
+          const response = await callGeminiApi(qType, question, studentProof);
           const el = document.getElementById("ai-loading");
           if (el) el.remove();
           appendAiMessage(response);
@@ -1964,148 +2617,136 @@
         }
       }
 
-      // Local Socratic Engine
       setTimeout(() => {
         const el = document.getElementById("ai-loading");
         if (el) el.remove();
 
         const response = generateLocalSocraticAdvice(qType, question, studentProof);
         appendAiMessage(response);
-      }, 500);
+      }, 450);
     }
 
-    // Local Pedagogical Rule Engine for Research Lessons (Formative Rubric)
+    // Local Pedagogical Rule Engine for Level 3 (Supports Personas A, B, and C)
     function generateLocalSocraticAdvice(qType, question, proof) {
       const prob = currentProblem;
       const cleanProof = proof.replace(/\s+/g, "");
 
-      if (qType === "start" || cleanProof.length === 0) {
-        return `まずは<strong>「着目する2つの三角形」</strong>を宣言することから始めましょう！<br>
-          問題文の図を見て、合同を言いたい2つの三角形を見つけられますか？<br>
-          書き出しは<strong>『△… と △… において、』</strong>となります。<br>
-          <span class="text-indigo-600 font-semibold">💡 ポイント：対応する頂点の順序（例えば点Aに対応する点）をそろえて書いてみよう！</span>`;
+      if (qType === "custom") {
+        if (question.includes("わから") || question.includes("分から") || question.includes("どうすれ") || question.includes("教えて")) {
+          if (cleanProof.length === 0) {
+            return `大丈夫ですよ！一緒に1行ずつ進めていきましょう。<br>${getProblemSpecificStepHint(prob, "step1")}<br>まずはこの1行目を上の記述エリアに書いてみてね！（難しければ『🌱 Lv.1 入門』や『🌿 Lv.2 標準』から始めるのもおすすめです！）`;
+          }
+        }
+        if (question.includes("錯角")) {
+          return `💡 <strong>平行線の錯角の書き方</strong>：<br>平行な2直線（例：AD // CB）に直線が交わるとき、「Zの字（または逆Zの字）」の内側にできる角は等しくなります。<br>証明では<strong>『平行線の錯角は等しいから、∠◯◯◯ = ∠△△△ … ③』</strong>のように書きます！`;
+        }
+        if (question.includes("対頂角")) {
+          return `💡 <strong>対頂角の書き方</strong>：<br>2本の直線が交わってできる向かい合った角（対頂角）はつねに等しくなります。<br>証明では<strong>『対頂角は等しいから、∠◯◯◯ = ∠△△△ … ②』</strong>のように、交点の文字を真ん中にして書きます！`;
+        }
+        if (question.includes("共通")) {
+          return `💡 <strong>共通な辺・角の書き方</strong>：<br>2つの三角形がぴったり重なっている辺や角があるときは、<strong>『共通な辺だから、◯◯ = ◯◯』</strong>（または<strong>『◯◯は共通』</strong>）と書きます！`;
+        }
       }
 
+      if (qType === "start" || cleanProof.length === 0) {
+        return `まずは<strong>「着目する2つの三角形」</strong>を宣言することから始めましょう！<br>
+          ${getProblemSpecificStepHint(prob, "step1")}<br>
+          <span class="text-indigo-600 font-semibold mt-1 block">💡 1行目が書けたら、次は「🔍 3つの根拠チェック」を押してみてね！</span>`;
+      }
+
+      const diag = analyzeProofFull(prob, proof);
+
       if (qType === "condition") {
-        return `合同条件を選ぶコツは、見つけた<strong>「3つの等しいパーツ」が【辺】なのか【角】なのか</strong>を数えることです。<br>
+        const sideCount = prob.reasons.filter(r => r.side === "辺").length;
+        const angCount = prob.reasons.filter(r => r.side === "角").length;
+        return `合同条件を選ぶコツは、集めた<strong>「3つの等しいパーツ」が【辺】なのか【角】なのか</strong>を数えることです。<br>
+          この問題【${prob.badge}】では、等しいと言えるのは<strong>【辺が${sideCount}組】</strong>、<strong>【角が${angCount}組】</strong>ですね！<br>
           ・辺が3組なら → <strong>「3組の辺がそれぞれ等しい」</strong><br>
-          ・辺が2組と角が1組なら → <strong>「2組の辺とその間の角がそれぞれ等しい」</strong><br>
-          ・辺が1組と角が2組なら → <strong>「1組の辺とその両端の角がそれぞれ等しい」</strong><br>
-          この問題【${prob.badge}】で集めた①, ②, ③のパーツ（辺と角）を数えてみよう！`;
+          ・辺が2組と間の角が1組なら → <strong>「2組の辺とその間の角がそれぞれ等しい」</strong><br>
+          ・辺が1組と両端の角が2組なら → <strong>「1組の辺とその両端の角がそれぞれ等しい」</strong><br>
+          どれがぴったり当てはまるか書いてみよう！`;
       }
 
       if (qType === "reasons") {
-        let feedback = [];
-        if (prob.id === "prob10") {
-          if (!proof.includes("錯角")) {
-            feedback.push("・平行線（l // m）がありますね！平行線の錯角を探してみましょう。");
-          }
-          if (!proof.includes("対頂角")) {
-            feedback.push("・点Mで交差している向かい合った角（対頂角）にも注目してみよう！");
-          }
-          if (!proof.includes("中点") && !proof.includes("仮定")) {
-            feedback.push("・MはABの中点なので、AM = BM ですね！");
-          }
-        } else if (prob.id === "prob11") {
-          if (!proof.includes("垂直") && !proof.includes("90")) {
-            feedback.push("・垂直二等分線なので、∠PMA = ∠PMB = 90°（直角）ですね！");
-          }
-          if (!proof.includes("共通")) {
-            feedback.push("・2つの直角三角形で重なっている辺（PM）に注目してみよう！『PMは共通だから、』と書けます。");
-          }
-        } else if (prob.condition.includes("3組の辺")) {
-          if (!proof.includes("共通")) {
-            feedback.push("・2つの三角形でぴったり重なっている辺（共通な辺）に注目してみよう！『〇〇は共通な辺だから、』と書けます。");
-          }
-          if (prob.id === "prob4" && !proof.includes("作図") && !proof.includes("半径")) {
-            feedback.push("・コンパスで作図した円の半径に注目してみよう！『作図より、』と書けます。");
-          }
-        } else if (prob.id === "prob5") {
-          if (!proof.includes("錯角")) {
-            feedback.push("・平行線（AD // CB）がありますね！平行線の間にある「Zの字」の角（錯角）を探してみましょう。");
-          }
-          if (!proof.includes("対頂角")) {
-            feedback.push("・交わった線分の向かい合った角（対頂角）にも注目してみよう！");
-          }
-        } else if (prob.id === "prob9") {
-          if (!proof.includes("共通")) {
-            feedback.push("・2つの三角形が重なっている角（∠A）に注目してみよう！『∠Aは共通だから、』と書けます。");
-          }
-        } else {
-          if (!proof.includes("対頂角")) {
-            feedback.push("・交わった2本の直線によってできる向かい合った角（対頂角）に注目してみよう！『対頂角は等しいから、』という理由が使えます。");
-          }
+        const reasonErrs = diag.logicErrors.filter(e => !e.includes("合同条件") && !e.includes("結論"));
+        if (reasonErrs.length > 0) {
+          return `🌱 <strong>根拠と等式の見直しポイントが見つかりました：</strong><br>${reasonErrs.join("<br>")}`;
         }
-
-        if (feedback.length === 0) {
-          return `🌟 <strong>素晴らしい着眼点です！必要な根拠がしっかり揃っています！</strong><br>式ごとに『… ①』『… ②』『… ③』と番号を振るのも忘れないようにしましょう！`;
-        } else {
-          return `🌱 <strong>良い調子です！あと少し補うとさらに説得力が増しますよ：</strong><br>${feedback.join("<br>")}`;
+        if (diag.missingReasonsHints.length > 0) {
+          return `🌱 <strong>現在 ${diag.matchedCount} 組の等式が見つかっています！あと ${diag.missingReasonsHints.length} つ見つけてみよう：</strong><br>
+            ${diag.missingReasonsHints.join("<br>")}<br>
+            ${diag.goodFindings.length > 0 ? "<br>" + diag.goodFindings.slice(0, 2).join("<br>") : ""}`;
         }
+        return `🌟 <strong>素晴らしい着眼点です！3つの根拠と等式がすべて正しく揃っています！</strong><br>
+          ${diag.goodFindings.slice(0, 3).join("<br>")}<br>
+          ${diag.brushUpTips.length > 0 ? "<br>" + diag.brushUpTips.join("<br>") : "次は『📐 合同条件』と『結論』をつなげて完成させよう！"}`;
       }
 
-      // --- Rubric Diagnosis (Formative Assessment for Research Lessons) ---
-      const hasTriangles = proof.includes("△") && (proof.includes("において") || proof.includes("と"));
-      const hasNumbers = proof.includes("①") || proof.includes("②") || proof.includes("③") || proof.includes("1") || proof.includes("2");
-      const hasCondition = proof.includes("等しいから") || proof.includes("合同条件") || proof.includes("組の辺") || proof.includes("組の角");
-      const hasConclusion = proof.includes("≡") || proof.includes("＝") || proof.includes("=") || proof.includes("したがって") || proof.includes("より");
-
-      // Extract triangles written by student to check exact vertex correspondence
-      let vertexAdvice = "";
-      const triMatches = [...proof.matchAll(/△\s*([A-Za-z]{3})/g)];
-      if (triMatches.length >= 2) {
-        const s1 = triMatches[0][1];
-        const s2 = triMatches[1][1];
-        const isCorr = checkTriangleCorrespondence(prob.tri1, prob.tri2, s1, s2);
-        if (isCorr) {
-          vertexAdvice = `✅ <strong>頂点の対応順</strong>：バッチリ合っています！（△${s1} と △${s2} の対応が正しく揃っています）`;
-        } else {
-          vertexAdvice = `💡 <strong>頂点の対応順</strong>：『△${s1} と △${s2}』となっています。点${s1[0]}に対応する頂点、点${s1[1]}に対応する頂点を図でもう一度確認して、対応順が揃っているか見直してみよう！（正解例：△${prob.tri1} と △${prob.tri2}）`;
-        }
-      } else if (hasTriangles) {
-        vertexAdvice = `💡 <strong>着目する三角形</strong>：『△… と △… において、』の形で、対応する頂点の順序を揃えて書いてみよう！（例：△${prob.tri1} と △${prob.tri2}）`;
+      if (diag.matchedCount === 0 && !diag.isConclusionOk && diag.logicErrors.length === 0) {
+        return `${diag.openingTriMsg}<br><br>
+          🌱 <strong>次のステップに進もう！</strong><br>
+          ${getProblemSpecificStepHint(prob, "step2")}`;
       }
 
-      // Rubric Level 3: Complete structure
-      if (hasTriangles && hasNumbers && hasCondition && hasConclusion) {
-        return `🎉 <strong>素晴らしい論理展開です！証明の骨組みがバッチリ完成しています！</strong><br>
+      if (!diag.isOpeningTriOk || diag.logicErrors.length > 0) {
+        let errList = [];
+        if (!diag.isOpeningTriOk) errList.push(diag.openingTriMsg);
+        if (diag.logicErrors.length > 0) errList.push(...diag.logicErrors);
+        if (diag.missingReasonsHints.length > 0) {
+          errList.push(`<strong>【まだ書かれていない根拠のヒント】</strong>：<br>${diag.missingReasonsHints.join("<br>")}`);
+        }
+        return `🌱 <strong>惜しい！論理・対応順の見直しポイントがあります：</strong><br><br>
+          ${errList.join("<br><br>")}<br><br>
+          <span class="text-indigo-700 font-semibold block">💡 上のポイントを図と照らし合わせて修正し、もう一度「✨ 診断＆ブラッシュアップ」を押してみてね！</span>`;
+      }
+
+      if (diag.isOpeningTriOk && diag.logicErrors.length === 0 && diag.missingReasonsHints.length === 0 && diag.condStatus === "ok" && diag.isConclusionOk && diag.brushUpTips.length === 0) {
+        return `🎉 <strong>素晴らしい！完璧な証明です！</strong><br>
           【診断ルブリック結果】：<br>
-          ✅ 三角形の着目宣言：OK<br>
-          ${vertexAdvice ? vertexAdvice + '<br>' : ''}
-          ✅ 根拠の整理（①②③）：OK<br>
-          ✅ 合同条件の適用：OK<br>
-          ✅ 結論への接続：OK<br><br>
-          ${!prob.conclusion.includes("△") ? `💡 仕上げの確認：合同が言えた後、『合同な図形の対応する辺は等しいから、${prob.conclusion}』と結べているかもチェックしてみてね！` : 'このまま自信を持って発表やノート記録に進められます！'}`;
+          ${diag.openingTriMsg}<br>
+          ${diag.goodFindings.slice(0, 3).join("<br>")}<br>
+          ✅ <strong>根拠と等式の整合性</strong>：3組とも理由と式が論理的に一致しています！<br>
+          ✅ <strong>合同条件（${prob.condition}）</strong>：的確に適用されています！<br>
+          ✅ <strong>結論（${prob.conclusion}）</strong>：対応順まで完璧に結べています！<br><br>
+          論理の破綻が一切ない、模範解答としてそのまま発表・提出できる完成度です！`;
       }
 
-      // Rubric Level 2: Core logic present, needs refinement
-      let adviceSteps = [];
-      if (!hasTriangles) {
-        adviceSteps.push("・どの2つの三角形に着目したか（『△… と △… において、』）を書き出しに入れましょう。");
+      let nextBrushUps = [];
+      if (diag.missingReasonsHints.length > 0) {
+        nextBrushUps.push(`<strong>【不足している根拠を補おう】</strong>：<br>${diag.missingReasonsHints.join("<br>")}`);
       }
-      if (!hasNumbers) {
-        adviceSteps.push("・見つけた等しい式に『… ①』『… ②』『… ③』と番号を振ると、合同条件に引用しやすくなります。");
+      if (diag.condStatus === "missing") {
+        nextBrushUps.push(diag.condMsg);
       }
-      if (!hasCondition) {
-        adviceSteps.push("・見つけた根拠から言える『三角形の合同条件（〜それぞれ等しいから、）』をつなげましょう。");
+      if (diag.brushUpTips.length > 0) {
+        nextBrushUps.push(...diag.brushUpTips);
       }
-      if (!hasConclusion) {
-        if (!prob.conclusion.includes("△")) {
-          adviceSteps.push(`・最後に『合同な図形の対応する辺は等しいから、${prob.conclusion}』とゴールを結びましょう。`);
-        } else {
-          adviceSteps.push(`・最後に『したがって △… ≡ △…』と結論を結びましょう。`);
-        }
+      if (!diag.isConclusionOk && diag.conclusionMsg) {
+        nextBrushUps.push(diag.conclusionMsg);
       }
 
-      return `🌱 <strong>論理の筋道はしっかり捉えられています！基本方針はバッチリです！</strong><br>
-        全体の構成をより説得力のある満点の証明にブラッシュアップするためのヒント：<br>
-        ${adviceSteps.join("<br>")}<br>
-        ${vertexAdvice ? `<span class="mt-1 block">${vertexAdvice}</span>` : ''}
-        少しずつ付け足して、完成を目指そう！`;
+      return `🌟 <strong>基本OK！証明の論理の筋道はしっかり通っています！</strong><br>
+        ${diag.openingTriMsg}<br>
+        ${diag.goodFindings.slice(0, 2).join("<br>")}<br><br>
+        <strong>【さらに説得力のある満点の証明にするためのブラッシュアップ】</strong>：<br>
+        ${nextBrushUps.join("<br><br>")}<br><br>
+        <span class="text-indigo-700 font-semibold block">💡 あと少し付け足すだけで完璧な証明になりますよ！</span>`;
     }
+
+
     // Call Gemini API (1.5 Flash)
-    async function callGeminiApi(question, proof) {
-      const systemInstruction = `あなたは中学校数学科の研究授業を支援する、生徒の伴走者としての温かい数学の先生（AI学習パートナー）です。
+    async function callGeminiApi(qType, question, proof) {
+      const diag = analyzeProofFull(currentProblem, proof || "");
+      const diagSummary = [
+        `三角形の宣言と対応順: ${diag.openingTriMsg.replace(/<[^>]+>/g, "")}`,
+        `論理・対応順エラー検出: ${diag.logicErrors.length > 0 ? diag.logicErrors.map(e => e.replace(/<[^>]+>/g, "")).join(" / ") : "なし"}`,
+        `不足している根拠: ${diag.missingReasonsHints.length > 0 ? diag.missingReasonsHints.join(" / ") : "なし（3組充足）"}`,
+        `ブラッシュアップ項目: ${diag.brushUpTips.length > 0 ? diag.brushUpTips.map(b => b.replace(/<[^>]+>/g, "")).join(" / ") : "なし"}`,
+        `合同条件判定: ${diag.condStatus}`,
+        `結論判定: ${diag.isConclusionOk ? "OK" : "未完了"}`
+      ].join("\n");
+
+      const systemInstruction = `あなたは中学校数学科の研究授業を支援する、生徒の伴走者としての数学教師（AI指導パートナー）です。
 現在、中学2年生が「4章 平行と合同」の単元で三角形の合同の証明問題に取り組んでいます。
 
 【対象問題の情報】
@@ -2115,24 +2756,22 @@
 仮定：${currentProblem.hypotheses.join(", ")}
 結論：${currentProblem.conclusion}
 合同条件：${currentProblem.condition}
-根拠となる理由の正解例：${currentProblem.reasons.map(r => r.type + ": " + r.eq).join(", ")}
+根拠となる理由と等式の正解：${currentProblem.reasons.map(r => r.type + ": " + r.eq).join(", ")}
 
-【研究授業に向けた評価基準（ルブリック）と指導方針】：
-1. 【認知的承認（基本OK）】：
-   ・三角形の宣言、等しい根拠、合同条件、結論という「論理の骨組み」を組み立てようとしている姿勢をまず全力で褒め、肯定してください。
-   ・根拠が一部不足していたり、言葉遣いが不十分でも、論理が破綻していなければ「筋道はバッチリ捉えられていますよ！」「この方針で合っています！」と基本OKとして生徒に安心感と自己効力感を与えてください。
-2. 【最重要：頂点の対応順の厳格チェック】：
-   ・生徒が書いた三角形の頂点順を厳密にチェックしてください（正解例：△${currentProblem.tri1} と △${currentProblem.tri2}）。
-   ・対応順が合っている場合：「頂点の対応順も正しく綺麗に揃っています！」と明確に褒めてください。「対応順を見直そう」といった不要な指摘は絶対にしないでください。
-   ・対応順がズレている場合のみ：「点〇に対応する頂点はどれかな？頂点の順序を図と見比べてみよう」と具体的にヒントを出してください。
-3. 【根拠のブラッシュアップ（深化）】：
-   ・3組の根拠のうち不足している点（対頂角、平行線の錯角、中点、共通な辺など）があれば、答えを直接言わずに「あと1つ、〇〇（図で交わっている角／平行線の錯角など）に注目してみると、さらに説得力が増しますよ！」とソクラテス式にヒントを出してください。
-4. 【発展の結論（辺や角の等しさ）】：
-   ・合同の後に辺の等しさ（AP=BQやPA=PBなど）を証明する問題の場合、「合同が言えたら、最後に『合同な図形の対応する辺は等しいから』と結ぶとゴールです！」と導いてください。
-5. 【文体・トーン】：
-   ・平易な言葉で、中学生が読みやすいよう適度に改行を入れ、150〜250字程度で簡潔かつ前向きに返答してください。決して「不正解」「間違いです」といった否定的な言葉は使わないでください。`;
+【最重要：研究授業に向けた厳格な論理・対応チェック項目】
+1. システム自動検証エンジンによる診断結果（特に「論理・対応順エラー検出」）に誤りがある場合は、決して「全て合っています」「完璧です」と評価せず、生徒が自分で気づいて直せるようソクラテス式に優しくヒントを出してください。
+2. 論理・対応順エラーが「なし」で、ブラッシュアップ項目（理由の補足など）のみの場合は、「論理の筋道はバッチリ合っています！（基本OK）」とまず肯定した上で、ブラッシュアップのヒントを伝えてください。
+3. 150〜250字程度で、中学生が読みやすいよう適度に改行を入れて温かく返答してください。`;
 
-      const prompt = `生徒からの相談：「${question}」\n\n生徒が今書いている証明文：\n"""\n${proof || "（まだ何も書かれていません）"}\n"""`;
+      const prompt = `生徒からの相談：「${question}」
+
+生徒が今書いている証明文：
+"""
+${proof || "（まだ何も書かれていません）"}
+"""
+
+【システム自動検証エンジンによる厳密診断結果】：
+${diagSummary}`;
 
       const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
@@ -2148,7 +2787,7 @@
       if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
       const data = await res.json();
       const answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      return answer ? answer.replace(/\n/g, "<br>") : "うまく回答を生成できませんでした。";
+      return answer ? answer.replace(/\n/g, "<br>") : generateLocalSocraticAdvice(qType, question, proof);
     }
 
     // --- Teacher Auth Modal Handler ---
