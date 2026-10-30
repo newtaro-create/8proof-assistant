@@ -30,7 +30,7 @@
         <div class="bg-white/10 p-2 rounded-lg text-xl font-bold">📐</div>
         <div>
           <h1 class="text-lg md:text-xl font-bold tracking-tight">中学数学 証明アシスタント</h1>
-          <p class="text-xs text-indigo-200">中学2年「4章 平行と合同」合同の証明ステップアップ（全9問）</p>
+          <p class="text-xs text-indigo-200">中学2年「4章 平行と合同」合同の証明ステップアップ（全11問）</p>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -54,10 +54,10 @@
       <!-- Problem Selector Card -->
       <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
         <label for="problem-select" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-          問題を選択する（構想練習 全9問）
+          問題を選択する（全11問）
         </label>
         <select id="problem-select" class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none font-medium">
-          <!-- Dynamically populated from 9 problems -->
+          <!-- Dynamically populated from 11 problems -->
         </select>
       </div>
 
@@ -68,7 +68,10 @@
           <span id="problem-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
             Level 2-1
           </span>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1.5">
+            <button id="btn-change-image" class="text-xs px-2.5 py-1 rounded bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 border border-slate-200 transition flex items-center gap-1">
+              <span>📷</span> <span>図の変更</span>
+            </button>
             <button id="btn-toggle-marks" class="text-xs px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1">
               <span id="mark-icon">👁️</span> <span id="mark-text">図の印を表示</span>
             </button>
@@ -83,10 +86,10 @@
           問題文がここに入ります。
         </p>
 
-        <!-- Figure SVG Container -->
+        <!-- Figure Container (Supports user custom image / file with automatic SVG fallback) -->
         <div class="relative bg-slate-50 rounded-xl border border-slate-200 p-3 flex items-center justify-center min-h-[220px] max-h-[280px] overflow-hidden">
           <div id="figure-container" class="w-full h-full flex items-center justify-center">
-            <!-- Dynamic SVG will be rendered here -->
+            <!-- Dynamic Image or SVG will be rendered here -->
           </div>
         </div>
 
@@ -228,7 +231,7 @@
             <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
               <span class="text-xs font-bold text-indigo-700 block mb-1">【ステップ4：結論】</span>
               <div class="flex flex-wrap items-center gap-2 math-font">
-                <select id="l1-conclusion" class="w-full bg-white border border-slate-300 rounded px-2 py-1 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-indigo-500"></select>
+                <select id="l1-conclusion" class="w-full bg-white border border-slate-300 rounded px-2 py-1 text-xs sm:text-sm font-bold text-slate-800 focus:ring-2 focus:ring-indigo-500"></select>
               </div>
             </div>
 
@@ -254,6 +257,25 @@
               <strong>ステップごとに自分で書いてみよう！</strong><br>
               それぞれのステップの入力欄にキーボードで入力してください。「ヒント」ボタンを押すとヒントが表示されます。
             </div>
+          </div>
+
+          <!-- Helper Math Symbols Palette for Level 2 (Dedicated Keypad) -->
+          <div class="bg-slate-100 p-2.5 rounded-lg border border-slate-200 flex flex-wrap items-center gap-1.5 shadow-sm">
+            <span class="text-xs font-bold text-slate-600 mr-1 flex items-center gap-1">
+              <span>⌨️</span> 記号入力:
+            </span>
+            <button type="button" class="btn-symbol-l2 px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 border border-slate-300 rounded text-xs font-bold text-slate-700 shadow-sm transition active:scale-95">△</button>
+            <button type="button" class="btn-symbol-l2 px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 border border-slate-300 rounded text-xs font-bold text-slate-700 shadow-sm transition active:scale-95">≡</button>
+            <button type="button" class="btn-symbol-l2 px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 border border-slate-300 rounded text-xs font-bold text-slate-700 shadow-sm transition active:scale-95">∠</button>
+            <button type="button" class="btn-symbol-l2 px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 border border-slate-300 rounded text-xs font-bold text-slate-700 shadow-sm transition active:scale-95">//</button>
+            <button type="button" class="btn-symbol-l2 px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 border border-slate-300 rounded text-xs font-bold text-slate-700 shadow-sm transition active:scale-95">＝</button>
+            <button type="button" class="btn-symbol-l2 px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 border border-slate-300 rounded text-xs font-bold text-slate-700 shadow-sm transition active:scale-95">①</button>
+            <button type="button" class="btn-symbol-l2 px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 border border-slate-300 rounded text-xs font-bold text-slate-700 shadow-sm transition active:scale-95">②</button>
+            <button type="button" class="btn-symbol-l2 px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 border border-slate-300 rounded text-xs font-bold text-slate-700 shadow-sm transition active:scale-95">③</button>
+            <button type="button" class="btn-symbol-l2 px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 border border-slate-300 rounded text-xs font-bold text-slate-700 shadow-sm transition active:scale-95">より、</button>
+            <button type="button" class="btn-symbol-l2 px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 border border-slate-300 rounded text-xs font-bold text-slate-700 shadow-sm transition active:scale-95">において、</button>
+            <button type="button" class="btn-symbol-l2 px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 border border-slate-300 rounded text-xs font-bold text-slate-700 shadow-sm transition active:scale-95">から、</button>
+            <span class="text-[10px] text-slate-400 ml-auto hidden sm:inline">※選択中の入力枠に挿入されます</span>
           </div>
 
           <div class="space-y-4 text-sm">
@@ -296,7 +318,7 @@
                 <span class="text-xs font-bold text-indigo-700">④ 結論</span>
                 <button type="button" class="btn-step-hint text-xs text-indigo-600 hover:text-indigo-800 underline" data-hint="step4">💡 ヒント</button>
               </div>
-              <input type="text" id="l2-input-step4" placeholder="△◯◯ ≡ △△△" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              <input type="text" id="l2-input-step4" placeholder="△◯◯ ≡ △△△（または辺や角の結論）" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
               <div id="hint-box-step4" class="hidden mt-2 p-2 bg-yellow-50 text-yellow-800 text-xs rounded border border-yellow-200"></div>
             </div>
 
@@ -336,24 +358,24 @@
               <span>【証明の記述エリア】ノートに書くように一から書いてみよう</span>
               <span id="char-count" class="text-slate-400 font-normal">0 文字</span>
             </label>
-            <textarea id="l3-textarea" rows="7" placeholder="証明をここに入力してください。&#10;&#10;【構成の目安】&#10;1. 着目する2つの三角形（△… と △… において、）&#10;2. 等しい3つの根拠と式（… ①, ②, ③）&#10;3. 合同条件（①, ②, ③より、… から、）&#10;4. 結論（△… ≡ △…）&#10;&#10;※困ったときは、下の『AIと壁打ちする』ボタンを押してヒントをもらおう！" class="w-full flex-1 bg-slate-50 border border-slate-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white focus:outline-none font-mono leading-relaxed resize-y"></textarea>
+            <textarea id="l3-textarea" rows="7" placeholder="証明をここに入力してください。&#10;&#10;【構成の目安】&#10;1. 着目する2つの三角形（△… と △… において、）&#10;2. 等しい3つの根拠と式（… ①, ②, ③）&#10;3. 合同条件（①, ②, ③より、… から、）&#10;4. 結論（△… ≡ △… または 対応する辺・角の結論）&#10;&#10;※困ったときは、下の『AIと壁打ちする』ボタンを押してヒントをもらおう！" class="w-full flex-1 bg-slate-50 border border-slate-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white focus:outline-none font-mono leading-relaxed resize-y"></textarea>
           </div>
 
           <!-- Wall-hitting / Advice Trigger Buttons -->
           <div class="space-y-2">
             <div class="text-xs font-bold text-slate-500">💬 AIと壁打ちする（困ったことや確認したいことを選んでね）:</div>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              <button type="button" class="btn-quick-ask bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-800 text-xs font-medium py-2 px-2.5 rounded-lg transition text-center" data-question="start">
+              <button type="button" class="btn-quick-ask bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-800 text-xs font-medium py-2 px-2.5 rounded-lg transition text-center shadow-sm" data-question="start">
                 🏁 書き始めのヒント
               </button>
-              <button type="button" class="btn-quick-ask bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-800 text-xs font-medium py-2 px-2.5 rounded-lg transition text-center" data-question="reasons">
-                🔍 理由の書き方チェック
+              <button type="button" class="btn-quick-ask bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-800 text-xs font-medium py-2 px-2.5 rounded-lg transition text-center shadow-sm" data-question="reasons">
+                🔍 3つの根拠チェック
               </button>
-              <button type="button" class="btn-quick-ask bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-800 text-xs font-medium py-2 px-2.5 rounded-lg transition text-center" data-question="condition">
+              <button type="button" class="btn-quick-ask bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-800 text-xs font-medium py-2 px-2.5 rounded-lg transition text-center shadow-sm" data-question="condition">
                 📐 合同条件の相談
               </button>
-              <button type="button" class="btn-quick-ask bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2 px-2.5 rounded-lg transition text-center shadow-sm" data-question="full">
-                ✨ 全体添削＆壁打ち
+              <button type="button" class="btn-quick-ask bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2 px-2.5 rounded-lg transition text-center shadow" data-question="rubric">
+                ✨ 診断＆ブラッシュアップ
               </button>
             </div>
           </div>
@@ -383,6 +405,61 @@
 
   </main>
 
+  <!-- Modal: Image Replacement Settings -->
+  <div id="modal-image" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+        <h3 class="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
+          <span>📷</span> 問題図形の画像差し替え・設定
+        </h3>
+        <button id="btn-close-image-modal" class="text-slate-400 hover:text-slate-600 text-lg font-bold p-1">×</button>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
+        <p>
+          現在選択中の問題（<span id="current-prob-name" class="font-bold text-indigo-700"></span>）の図形を、お手元の画像ファイル（プリントの切り抜きやスクリーンショット）に差し替えることができます。
+        </p>
+
+        <!-- Option 1: Direct File Upload from Device -->
+        <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-3.5 space-y-2">
+          <span class="font-bold text-indigo-900 flex items-center gap-1.5">
+            <span>📱</span> iPad / PCから画像を選択する（簡単）
+          </span>
+          <p class="text-xs text-indigo-800 leading-normal">
+            写真ライブラリやファイルから画像を選ぶだけで、このブラウザ上に即座に表示されます（ブラウザ内に保存されます）。
+          </p>
+          <input type="file" id="input-device-image" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer">
+        </div>
+
+        <!-- Option 2: GitHub File Path / Web URL -->
+        <div class="border border-slate-200 rounded-xl p-3.5 space-y-2 bg-slate-50">
+          <span class="font-bold text-slate-700 flex items-center gap-1.5">
+            <span>🌐</span> GitHub上の画像パス または URL を指定する
+          </span>
+          <p class="text-xs text-slate-500 leading-normal">
+            GitHubリポジトリ内に画像を配置して公開する場合、そのファイル名（例: <code class="bg-slate-200 px-1 py-0.5 rounded">q8.png</code> や <code class="bg-slate-200 px-1 py-0.5 rounded">images/q8.png</code>）を指定します。
+          </p>
+          <input type="text" id="input-image-path" placeholder="例: q8.png または images/q8.png" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+          <div class="text-right">
+            <button type="button" id="btn-save-image-path" class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition">
+              パスを適用
+            </button>
+          </div>
+        </div>
+
+        <!-- Reset Button -->
+        <div class="pt-2 flex items-center justify-between border-t border-slate-100">
+          <button type="button" id="btn-reset-default-fig" class="text-xs text-rose-600 hover:text-rose-800 underline">
+            ↺ デフォルトの図（SVG）に戻す
+          </button>
+          <button type="button" id="btn-done-image-modal" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-lg text-xs transition">
+            完了
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal: Password Auth for Teacher Settings -->
   <div id="modal-auth" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-slate-200">
@@ -393,8 +470,7 @@
         <button id="btn-close-auth" class="text-slate-400 hover:text-slate-600 text-lg font-bold p-1">×</button>
       </div>
       <p class="text-xs text-slate-600 mb-3">
-        設定画面を開くには先生用のパスワードを入力してください。<br>
-        <span class="text-indigo-600 font-medium">（初期パスワード：math）</span>
+        設定画面を開くには先生用のパスワードを入力してください。
       </p>
       <form id="form-auth" class="space-y-3">
         <div>
@@ -483,7 +559,7 @@
             <li>どの2つの三角形に注目するか宣言する（△◯◯と△△△において）</li>
             <li>等しい理由と式を3つ見つける（仮定、対頂角、錯角、共通な辺・角など）</li>
             <li>当てはまる三角形の合同条件を言う</li>
-            <li>結論を結ぶ（△◯◯ ≡ △△△）</li>
+            <li>結論を結ぶ（△◯◯ ≡ △△△、または等しい辺・角の結論）</li>
           </ol>
         </div>
       </div>
@@ -497,7 +573,7 @@
 
   <!-- SCRIPT -->
   <script>
-    // --- Data: 9 Congruence Problems (Grade 8 Chapter 4) from Teacher's Handout ---
+    // --- Data: 11 Congruence Problems (Grade 8 Chapter 4) ---
     const PROBLEMS = [
       {
         id: "prob1",
@@ -515,10 +591,10 @@
           { type: "仮定より", eq: "OD = OC", side: "辺" },
           { type: "対頂角は等しいから", eq: "∠AOD = ∠BOC", side: "角" }
         ],
+        image: "q1.png",
         svg: function(showMarks) {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
-              <!-- AD top (100,45)-(220,45), CB bottom (60,175)-(260,175), O(160,110) -->
               <line x1="100" y1="45" x2="220" y2="45" stroke="#4f46e5" stroke-width="2.5" />
               <line x1="60" y1="175" x2="260" y2="175" stroke="#4f46e5" stroke-width="2.5" />
               <line x1="100" y1="45" x2="260" y2="175" stroke="#334155" stroke-width="2" />
@@ -539,18 +615,15 @@
               <circle cx="160" cy="110" r="4" fill="#1e293b" />
               <text x="165" y="105" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">O</text>
 
-              <!-- Single tick on OA and OB -->
               <line x1="126" y1="73" x2="134" y2="83" stroke="#0284c7" stroke-width="2" />
               <line x1="206" y1="138" x2="214" y2="148" stroke="#0284c7" stroke-width="2" />
 
-              <!-- Double tick on OD and OC -->
               <line x1="187" y1="81" x2="195" y2="73" stroke="#0284c7" stroke-width="2" />
               <line x1="191" y1="85" x2="199" y2="77" stroke="#0284c7" stroke-width="2" />
               <line x1="107" y1="146" x2="115" y2="138" stroke="#0284c7" stroke-width="2" />
               <line x1="111" y1="150" x2="119" y2="142" stroke="#0284c7" stroke-width="2" />
 
               ${showMarks ? `
-                <!-- Vertical angles at O -->
                 <path d="M 148 100 A 18 18 0 0 1 172 100" fill="none" stroke="#10b981" stroke-width="2.5" />
                 <path d="M 148 120 A 18 18 0 0 1 172 120" fill="none" stroke="#10b981" stroke-width="2.5" />
                 <text x="178" y="112" font-size="10" fill="#10b981" font-weight="bold">対頂角</text>
@@ -575,11 +648,10 @@
           { type: "仮定より", eq: "∠ACM = ∠BDM", side: "角" },
           { type: "対頂角は等しいから", eq: "∠AMC = ∠BMD", side: "角" }
         ],
+        image: "q2.png",
         svg: function(showMarks) {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
-              <!-- AC(70,50)-(40,175), DB(250,50)-(220,175), M(160,110) -->
-              <!-- AB: (70,50)-(220,175), CD: (40,175)-(250,50) -->
               <line x1="70" y1="50" x2="40" y2="175" stroke="#4f46e5" stroke-width="2.5" />
               <line x1="250" y1="50" x2="220" y2="175" stroke="#4f46e5" stroke-width="2.5" />
               <line x1="70" y1="50" x2="220" y2="175" stroke="#334155" stroke-width="2" />
@@ -600,18 +672,15 @@
               <circle cx="160" cy="110" r="4" fill="#1e293b" />
               <text x="165" y="105" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">M</text>
 
-              <!-- Double tick on MC and MD -->
               <line x1="97" y1="146" x2="105" y2="138" stroke="#0284c7" stroke-width="2" />
               <line x1="101" y1="150" x2="109" y2="142" stroke="#0284c7" stroke-width="2" />
               <line x1="201" y1="84" x2="209" y2="76" stroke="#0284c7" stroke-width="2" />
               <line x1="205" y1="88" x2="213" y2="80" stroke="#0284c7" stroke-width="2" />
 
-              <!-- Arc at C and D -->
               <path d="M 45 155 A 20 20 0 0 1 58 165" fill="none" stroke="#0284c7" stroke-width="2" />
               <path d="M 235 60 A 20 20 0 0 1 245 70" fill="none" stroke="#0284c7" stroke-width="2" />
 
               ${showMarks ? `
-                <!-- Vertical angles at M -->
                 <path d="M 148 102 A 18 18 0 0 1 152 122" fill="none" stroke="#10b981" stroke-width="2.5" />
                 <path d="M 172 118 A 18 18 0 0 1 168 98" fill="none" stroke="#10b981" stroke-width="2.5" />
                 <text x="175" y="90" font-size="10" fill="#10b981" font-weight="bold">対頂角</text>
@@ -636,10 +705,10 @@
           { type: "仮定より", eq: "BD = CD", side: "辺" },
           { type: "共通な辺だから", eq: "AD = AD", side: "辺" }
         ],
+        image: "q3.png",
         svg: function(showMarks) {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
-              <!-- Kite shape: A(160,25), B(60,170), C(260,170), D(160,120) -->
               <polygon points="160,25 60,170 160,120" fill="none" stroke="#334155" stroke-width="2" />
               <polygon points="160,25 260,170 160,120" fill="none" stroke="#334155" stroke-width="2" />
               <line x1="160" y1="25" x2="160" y2="120" stroke="#4f46e5" stroke-width="2.5" />
@@ -656,18 +725,15 @@
               <circle cx="160" cy="120" r="4" fill="#1e293b" />
               <text x="154" y="138" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">D</text>
 
-              <!-- Double tick on AB and AC -->
               <line x1="106" y1="94" x2="114" y2="100" stroke="#0284c7" stroke-width="2" />
               <line x1="109" y1="90" x2="117" y2="96" stroke="#0284c7" stroke-width="2" />
               <line x1="206" y1="100" x2="214" y2="94" stroke="#0284c7" stroke-width="2" />
               <line x1="203" y1="96" x2="211" y2="90" stroke="#0284c7" stroke-width="2" />
 
-              <!-- Single tick on BD and CD -->
               <line x1="107" y1="148" x2="113" y2="142" stroke="#0284c7" stroke-width="2" />
               <line x1="207" y1="142" x2="213" y2="148" stroke="#0284c7" stroke-width="2" />
 
               ${showMarks ? `
-                <!-- Common side AD -->
                 <text x="165" y="75" font-size="10" fill="#10b981" font-weight="bold">共通な辺</text>
               ` : ''}
             </svg>
@@ -690,43 +756,32 @@
           { type: "作図より", eq: "AC = BC", side: "辺" },
           { type: "共通な辺だから", eq: "OC = OC", side: "辺" }
         ],
+        image: "q4.png",
         svg: function(showMarks) {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
-              <!-- Angle XOY: O(50,180), ray OX toward (140,40), ray OY toward (280,180) -->
-              <!-- A on OX at (95,110), B on OY at (155,180) -> OA=OB=105 approx -->
-              <!-- C at (215,100) -> AC = BC, OC connects (50,180) to (215,100) -->
               <line x1="50" y1="180" x2="160" y2="30" stroke="#334155" stroke-width="2" />
               <line x1="50" y1="180" x2="280" y2="180" stroke="#334155" stroke-width="2" />
-
               <line x1="95" y1="110" x2="215" y2="100" stroke="#4f46e5" stroke-width="2" />
               <line x1="155" y1="180" x2="215" y2="100" stroke="#4f46e5" stroke-width="2" />
               <line x1="50" y1="180" x2="245" y2="85" stroke="#0d9488" stroke-width="2.5" />
 
-              <!-- Construction arcs -->
               <path d="M 85 125 A 105 105 0 0 0 165 170" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="2,2" />
-              <!-- Arc from A -->
               <path d="M 210 80 A 120 120 0 0 1 225 120" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="2,2" />
-              <!-- Arc from B -->
               <path d="M 200 110 A 120 120 0 0 1 230 90" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="2,2" />
 
               <circle cx="50" cy="180" r="4" fill="#1e293b" />
               <text x="35" y="195" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">O</text>
-
               <text x="162" y="30" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">X</text>
               <text x="278" y="195" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">Y</text>
-
               <circle cx="95" cy="110" r="4" fill="#1e293b" />
               <text x="80" y="105" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">A</text>
-
               <circle cx="155" cy="180" r="4" fill="#1e293b" />
               <text x="155" y="198" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">B</text>
-
               <circle cx="215" cy="100" r="4" fill="#1e293b" />
               <text x="225" y="105" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">C</text>
 
               ${showMarks ? `
-                <!-- Equal lengths -->
                 <line x1="70" y1="147" x2="76" y2="143" stroke="#0284c7" stroke-width="2" />
                 <line x1="100" y1="177" x2="105" y2="183" stroke="#0284c7" stroke-width="2" />
                 <text x="120" y="130" font-size="10" fill="#10b981" font-weight="bold">共通な辺 OC</text>
@@ -751,46 +806,36 @@
           { type: "対頂角は等しいから", eq: "∠AED = ∠BEC", side: "角" },
           { type: "平行線の錯角は等しいから", eq: "∠EAD = ∠EBC", side: "角" }
         ],
+        image: "q5.png",
         svg: function(showMarks) {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
-              <!-- AD top (90,45)-(230,45), CB bottom (60,175)-(200,175), E(160,110) -->
-              <!-- AB: (90,45)-(200,175), CD: (60,175)-(230,45) -->
               <line x1="90" y1="45" x2="230" y2="45" stroke="#4f46e5" stroke-width="2.5" />
               <line x1="60" y1="175" x2="200" y2="175" stroke="#4f46e5" stroke-width="2.5" />
               <line x1="90" y1="45" x2="200" y2="175" stroke="#334155" stroke-width="2" />
               <line x1="60" y1="175" x2="230" y2="45" stroke="#334155" stroke-width="2" />
 
-              <!-- Parallel arrows -->
               <path d="M 155 42 L 163 45 L 155 48" fill="none" stroke="#0284c7" stroke-width="2" />
               <path d="M 125 172 L 133 175 L 125 178" fill="none" stroke="#0284c7" stroke-width="2" />
 
               <circle cx="90" cy="45" r="4" fill="#1e293b" />
               <text x="75" y="42" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">A</text>
-
               <circle cx="230" cy="45" r="4" fill="#1e293b" />
               <text x="240" y="42" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">D</text>
-
               <circle cx="60" cy="175" r="4" fill="#1e293b" />
               <text x="45" y="190" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">C</text>
-
               <circle cx="200" cy="175" r="4" fill="#1e293b" />
               <text x="210" y="190" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">B</text>
-
               <circle cx="160" cy="110" r="4" fill="#1e293b" />
               <text x="168" y="112" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">E</text>
 
-              <!-- Single tick on EA and EB -->
               <line x1="121" y1="73" x2="129" y2="83" stroke="#0284c7" stroke-width="2" />
               <line x1="176" y1="138" x2="184" y2="148" stroke="#0284c7" stroke-width="2" />
 
               ${showMarks ? `
-                <!-- Alternate angles A and B -->
                 <path d="M 106 45 A 16 16 0 0 1 100 57" fill="none" stroke="#f59e0b" stroke-width="2.5" />
                 <path d="M 184 175 A 16 16 0 0 1 190 163" fill="none" stroke="#f59e0b" stroke-width="2.5" />
                 <text x="110" y="35" font-size="10" fill="#f59e0b" font-weight="bold">錯角</text>
-
-                <!-- Vertical angles at E -->
                 <path d="M 148 100 A 18 18 0 0 1 172 100" fill="none" stroke="#10b981" stroke-width="2.5" />
                 <path d="M 148 120 A 18 18 0 0 1 172 120" fill="none" stroke="#10b981" stroke-width="2.5" />
               ` : ''}
@@ -814,11 +859,10 @@
           { type: "仮定より", eq: "OC = OD", side: "辺" },
           { type: "対頂角は等しいから", eq: "∠AOC = ∠BOD", side: "角" }
         ],
+        image: "q6.png",
         svg: function(showMarks) {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
-              <!-- AC left (80,45)-(40,175), DB right (240,45)-(200,175), O(160,110) -->
-              <!-- AB: (80,45)-(200,175), CD: (40,175)-(240,45) -->
               <line x1="80" y1="45" x2="40" y2="175" stroke="#4f46e5" stroke-width="2.5" />
               <line x1="240" y1="45" x2="200" y2="175" stroke="#4f46e5" stroke-width="2.5" />
               <line x1="80" y1="45" x2="200" y2="175" stroke="#334155" stroke-width="2" />
@@ -826,31 +870,23 @@
 
               <circle cx="80" cy="45" r="4" fill="#1e293b" />
               <text x="70" y="38" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">A</text>
-
               <circle cx="240" cy="45" r="4" fill="#1e293b" />
               <text x="245" y="38" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">D</text>
-
               <circle cx="40" cy="175" r="4" fill="#1e293b" />
               <text x="25" y="190" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">C</text>
-
               <circle cx="200" cy="175" r="4" fill="#1e293b" />
               <text x="210" y="190" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">B</text>
-
               <circle cx="160" cy="110" r="4" fill="#1e293b" />
               <text x="165" y="105" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">O</text>
 
-              <!-- Single tick on OA and OB -->
               <line x1="116" y1="73" x2="124" y2="83" stroke="#0284c7" stroke-width="2" />
               <line x1="176" y1="138" x2="184" y2="148" stroke="#0284c7" stroke-width="2" />
-
-              <!-- Double tick on OC and OD -->
               <line x1="97" y1="146" x2="105" y2="138" stroke="#0284c7" stroke-width="2" />
               <line x1="101" y1="150" x2="109" y2="142" stroke="#0284c7" stroke-width="2" />
               <line x1="197" y1="81" x2="205" y2="73" stroke="#0284c7" stroke-width="2" />
               <line x1="201" y1="85" x2="209" y2="77" stroke="#0284c7" stroke-width="2" />
 
               ${showMarks ? `
-                <!-- Vertical angles at O -->
                 <path d="M 148 102 A 18 18 0 0 1 152 122" fill="none" stroke="#10b981" stroke-width="2.5" />
                 <path d="M 172 118 A 18 18 0 0 1 168 98" fill="none" stroke="#10b981" stroke-width="2.5" />
                 <text x="175" y="90" font-size="10" fill="#10b981" font-weight="bold">対頂角</text>
@@ -875,18 +911,16 @@
           { type: "仮定より", eq: "OC = OD", side: "辺" },
           { type: "対頂角は等しいから", eq: "∠AOC = ∠BOD", side: "角" }
         ],
+        image: "q7.png",
         svg: function(showMarks) {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
-              <!-- Notebook horizontal lines -->
               <line x1="30" y1="45" x2="290" y2="45" stroke="#cbd5e1" stroke-width="1.5" />
               <line x1="30" y1="78" x2="290" y2="78" stroke="#cbd5e1" stroke-width="1.5" />
               <line x1="30" y1="110" x2="290" y2="110" stroke="#cbd5e1" stroke-width="1.5" />
               <line x1="30" y1="142" x2="290" y2="142" stroke="#cbd5e1" stroke-width="1.5" />
               <line x1="30" y1="175" x2="290" y2="175" stroke="#cbd5e1" stroke-width="1.5" />
 
-              <!-- AC on top line: (80,45)-(250,45), DB on bottom line: (40,175)-(210,175) -->
-              <!-- AB: (80,45)-(210,175), CD: (250,45)-(40,175), O(145,110) -->
               <line x1="80" y1="45" x2="250" y2="45" stroke="#4f46e5" stroke-width="2.5" />
               <line x1="40" y1="175" x2="210" y2="175" stroke="#4f46e5" stroke-width="2.5" />
               <line x1="80" y1="45" x2="210" y2="175" stroke="#334155" stroke-width="2" />
@@ -894,31 +928,23 @@
 
               <circle cx="80" cy="45" r="4" fill="#1e293b" />
               <text x="75" y="38" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">A</text>
-
               <circle cx="250" cy="45" r="4" fill="#1e293b" />
               <text x="250" y="38" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">C</text>
-
               <circle cx="40" cy="175" r="4" fill="#1e293b" />
               <text x="25" y="190" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">D</text>
-
               <circle cx="210" cy="175" r="4" fill="#1e293b" />
               <text x="215" y="190" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">B</text>
-
               <circle cx="145" cy="110" r="4" fill="#1e293b" />
               <text x="145" y="130" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">O</text>
 
-              <!-- Single tick on OA and OB -->
               <line x1="108" y1="73" x2="116" y2="83" stroke="#0284c7" stroke-width="2" />
               <line x1="173" y1="138" x2="181" y2="148" stroke="#0284c7" stroke-width="2" />
-
-              <!-- Double tick on OC and OD -->
               <line x1="194" y1="81" x2="202" y2="73" stroke="#0284c7" stroke-width="2" />
               <line x1="198" y1="85" x2="206" y2="77" stroke="#0284c7" stroke-width="2" />
               <line x1="89" y1="146" x2="97" y2="138" stroke="#0284c7" stroke-width="2" />
               <line x1="93" y1="150" x2="101" y2="142" stroke="#0284c7" stroke-width="2" />
 
               ${showMarks ? `
-                <!-- Vertical angles at O -->
                 <path d="M 134 100 A 18 18 0 0 1 156 100" fill="none" stroke="#10b981" stroke-width="2.5" />
                 <path d="M 134 120 A 18 18 0 0 1 156 120" fill="none" stroke="#10b981" stroke-width="2.5" />
                 <text x="210" y="70" font-size="10" fill="#64748b" font-weight="bold">ノートの罫線（平行）</text>
@@ -943,11 +969,10 @@
           { type: "仮定より", eq: "AC = DB", side: "辺" },
           { type: "共通な辺だから", eq: "BC = CB", side: "辺" }
         ],
+        image: "q8.png",
         svg: function(showMarks) {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
-              <!-- Base BC(70,180)-(250,180), Top A(60,50), D(260,50) -->
-              <!-- Triangles: ABC and DCB -->
               <polygon points="60,50 70,180 250,180" fill="none" stroke="#334155" stroke-width="2" />
               <polygon points="260,50 70,180 250,180" fill="none" stroke="#334155" stroke-width="2" />
               <line x1="60" y1="50" x2="70" y2="180" stroke="#4f46e5" stroke-width="2.5" />
@@ -956,28 +981,20 @@
 
               <circle cx="60" cy="50" r="4" fill="#1e293b" />
               <text x="45" y="45" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">A</text>
-
               <circle cx="260" cy="50" r="4" fill="#1e293b" />
               <text x="270" y="45" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">D</text>
-
               <circle cx="70" cy="180" r="4" fill="#1e293b" />
               <text x="50" y="195" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">B</text>
-
               <circle cx="250" cy="180" r="4" fill="#1e293b" />
               <text x="260" y="195" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">C</text>
 
               ${showMarks ? `
-                <!-- Single tick on AB and DC -->
                 <line x1="60" y1="115" x2="70" y2="115" stroke="#0284c7" stroke-width="2" />
                 <line x1="250" y1="115" x2="260" y2="115" stroke="#0284c7" stroke-width="2" />
-
-                <!-- Double tick on AC and DB -->
                 <line x1="152" y1="110" x2="160" y2="118" stroke="#0284c7" stroke-width="2" />
                 <line x1="155" y1="107" x2="163" y2="115" stroke="#0284c7" stroke-width="2" />
                 <line x1="156" y1="120" x2="164" y2="112" stroke="#0284c7" stroke-width="2" />
                 <line x1="159" y1="123" x2="167" y2="115" stroke="#0284c7" stroke-width="2" />
-
-                <!-- Common base mark -->
                 <text x="135" y="200" font-size="10" fill="#10b981" font-weight="bold">共通な辺 BC</text>
               ` : ''}
             </svg>
@@ -1000,12 +1017,10 @@
           { type: "仮定より", eq: "∠ABC = ∠ADE", side: "角" },
           { type: "共通な角だから", eq: "∠BAC = ∠DAE", side: "角" }
         ],
+        image: "q9.png",
         svg: function(showMarks) {
           return `
             <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
-              <!-- Vertex A(50, 110) -->
-              <!-- Top ray: C(180, 65), D(250, 40) -->
-              <!-- Bottom ray: E(180, 155), B(250, 180) -->
               <line x1="50" y1="110" x2="250" y2="40" stroke="#334155" stroke-width="2" />
               <line x1="50" y1="110" x2="250" y2="180" stroke="#334155" stroke-width="2" />
               <line x1="250" y1="180" x2="180" y2="65" stroke="#4f46e5" stroke-width="2.5" />
@@ -1013,31 +1028,162 @@
 
               <circle cx="50" cy="110" r="4" fill="#1e293b" />
               <text x="35" y="115" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">A</text>
-
               <circle cx="180" cy="65" r="4" fill="#1e293b" />
               <text x="175" y="55" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">C</text>
-
               <circle cx="250" cy="40" r="4" fill="#1e293b" />
               <text x="255" y="38" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">D</text>
-
               <circle cx="180" cy="155" r="4" fill="#1e293b" />
               <text x="175" y="172" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">E</text>
-
               <circle cx="250" cy="180" r="4" fill="#1e293b" />
               <text x="255" y="195" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">B</text>
 
               ${showMarks ? `
-                <!-- Equal sides BA = DA -->
                 <line x1="147" y1="72" x2="153" y2="78" stroke="#0284c7" stroke-width="2" />
                 <line x1="147" y1="148" x2="153" y2="142" stroke="#0284c7" stroke-width="2" />
-
-                <!-- Equal angles B and D -->
                 <path d="M 235 174 A 20 20 0 0 1 243 162" fill="none" stroke="#f59e0b" stroke-width="2.5" />
                 <path d="M 235 46 A 20 20 0 0 1 243 58" fill="none" stroke="#f59e0b" stroke-width="2.5" />
-
-                <!-- Common angle A -->
                 <path d="M 72 102 A 25 25 0 0 1 72 118" fill="none" stroke="#10b981" stroke-width="2.5" />
                 <text x="75" y="114" font-size="10" fill="#10b981" font-weight="bold">共通な角</text>
+              ` : ''}
+            </svg>
+          `;
+        }
+      },
+      // === NEW PROBLEM 10 (Q8) ===
+      {
+        id: "prob10",
+        badge: "Q8（思①）",
+        badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
+        title: "平行線と線分・対応する辺の証明（AP＝BQ）",
+        text: "2直線 l, m が平行（l // m）で、線分ABの中点をMとします。点Mを通る直線が直線 l, m と交わる点をそれぞれP, Qとするとき、AP = BQ であることを証明しなさい。",
+        hypotheses: ["AM = BM（MはABの中点）", "l // m（平行線）", "対頂角は等しい"],
+        conclusion: "AP = BQ",
+        tri1: "APM",
+        tri2: "BQM",
+        condition: "1組の辺とその両端の角がそれぞれ等しい",
+        reasons: [
+          { type: "仮定（中点）より", eq: "AM = BM", side: "辺" },
+          { type: "対頂角は等しいから", eq: "∠AMP = ∠BMQ", side: "角" },
+          { type: "平行線の錯角は等しいから", eq: "∠PAM = ∠QBM", side: "角" }
+        ],
+        image: "q8.png",
+        svg: function(showMarks) {
+          return `
+            <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
+              <!-- Parallel line l (y=50) and m (y=170) -->
+              <line x1="30" y1="50" x2="280" y2="50" stroke="#334155" stroke-width="2" />
+              <line x1="30" y1="170" x2="280" y2="170" stroke="#334155" stroke-width="2" />
+              
+              <!-- Arrowheads on lines -->
+              <path d="M 270 47 L 280 50 L 270 53" fill="none" stroke="#334155" stroke-width="1.8" />
+              <path d="M 270 167 L 280 170 L 270 173" fill="none" stroke="#334155" stroke-width="1.8" />
+              <text x="288" y="54" font-size="14" font-style="italic" font-weight="bold" fill="#334155" font-family="serif">l</text>
+              <text x="288" y="174" font-size="14" font-style="italic" font-weight="bold" fill="#334155" font-family="serif">m</text>
+
+              <!-- Shaded Triangles △APM and △BQM -->
+              <!-- A(75, 50), P(125, 50), M(150, 110) -->
+              <!-- B(225, 170), Q(175, 170), M(150, 110) -->
+              <polygon points="75,50 125,50 150,110" fill="#e0f2fe" stroke="#0284c7" stroke-width="2" />
+              <polygon points="225,170 175,170 150,110" fill="#e0f2fe" stroke="#0284c7" stroke-width="2" />
+
+              <!-- Lines AB and PQ -->
+              <line x1="75" y1="50" x2="225" y2="170" stroke="#1e293b" stroke-width="2" />
+              <line x1="125" y1="50" x2="175" y2="170" stroke="#1e293b" stroke-width="2" />
+
+              <!-- Points & Labels -->
+              <circle cx="75" cy="50" r="3.5" fill="#1e293b" />
+              <text x="65" y="42" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">A</text>
+
+              <circle cx="125" cy="50" r="3.5" fill="#1e293b" />
+              <text x="123" y="42" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">P</text>
+
+              <circle cx="150" cy="110" r="3.5" fill="#1e293b" />
+              <text x="156" y="105" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">M</text>
+
+              <circle cx="175" cy="170" r="3.5" fill="#1e293b" />
+              <text x="170" y="190" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">Q</text>
+
+              <circle cx="225" cy="170" r="3.5" fill="#1e293b" />
+              <text x="230" y="190" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">B</text>
+
+              <!-- Red tick marks on AM and BM -->
+              <line x1="109" y1="76" x2="116" y2="84" stroke="#ef4444" stroke-width="2.5" />
+              <line x1="184" y1="136" x2="191" y2="144" stroke="#ef4444" stroke-width="2.5" />
+
+              ${showMarks ? `
+                <!-- Vertical angles at M -->
+                <path d="M 142 102 A 16 16 0 0 1 154 98" fill="none" stroke="#10b981" stroke-width="2.5" />
+                <path d="M 158 118 A 16 16 0 0 1 146 122" fill="none" stroke="#10b981" stroke-width="2.5" />
+                <text x="165" y="112" font-size="10" fill="#10b981" font-weight="bold">対頂角</text>
+
+                <!-- Alternate interior angles at A and B -->
+                <path d="M 90 50 A 18 18 0 0 1 85 58" fill="none" stroke="#f59e0b" stroke-width="2.5" />
+                <path d="M 210 170 A 18 18 0 0 1 215 162" fill="none" stroke="#f59e0b" stroke-width="2.5" />
+                <text x="80" y="36" font-size="10" fill="#f59e0b" font-weight="bold">錯角</text>
+              ` : ''}
+            </svg>
+          `;
+        }
+      },
+      // === NEW PROBLEM 11 (Q9) ===
+      {
+        id: "prob11",
+        badge: "Q9（思①）",
+        badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
+        title: "垂直二等分線と距離・対応する辺の証明（PA＝PB）",
+        text: "線分ABの垂直二等分線 l と線分ABの交点をMとし、直線 l 上に点Pをとります。このとき、PA = PB であることを証明しなさい。",
+        hypotheses: ["AM = BM（lはABを二等分）", "∠PMA = ∠PMB = 90°（l⊥AB）", "PMは共通"],
+        conclusion: "PA = PB",
+        tri1: "PAM",
+        tri2: "PBM",
+        condition: "2組の辺とその間の角がそれぞれ等しい",
+        reasons: [
+          { type: "仮定（二等分線）より", eq: "AM = BM", side: "辺" },
+          { type: "仮定（垂直）より", eq: "∠PMA = ∠PMB", side: "角" },
+          { type: "共通な辺だから", eq: "PM = PM", side: "辺" }
+        ],
+        image: "q9.png",
+        svg: function(showMarks) {
+          return `
+            <svg viewBox="0 0 320 220" class="w-full h-full max-h-[220px]">
+              <!-- Vertical line l (x=160) -->
+              <line x1="160" y1="20" x2="160" y2="195" stroke="#334155" stroke-width="2" />
+              <text x="168" y="28" font-size="14" font-style="italic" font-weight="bold" fill="#334155" font-family="serif">l</text>
+
+              <!-- Base segment AB (y=170): A(70,170), B(250,170), M(160,170) -->
+              <!-- P(160, 50) -->
+              <!-- Shaded Triangles PAM and PBM -->
+              <polygon points="160,50 70,170 160,170" fill="#e0f2fe" stroke="#0284c7" stroke-width="2" />
+              <polygon points="160,50 250,170 160,170" fill="#e0f2fe" stroke="#0284c7" stroke-width="2" />
+
+              <!-- Segments PA and PB -->
+              <line x1="160" y1="50" x2="70" y2="170" stroke="#1e293b" stroke-width="2" />
+              <line x1="160" y1="50" x2="250" y2="170" stroke="#1e293b" stroke-width="2" />
+              <line x1="70" y1="170" x2="250" y2="170" stroke="#1e293b" stroke-width="2" />
+              <line x1="160" y1="50" x2="160" y2="170" stroke="#0284c7" stroke-width="2.5" />
+
+              <!-- Points & Labels -->
+              <circle cx="160" cy="50" r="3.5" fill="#1e293b" />
+              <text x="168" y="52" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">P</text>
+
+              <circle cx="70" cy="170" r="3.5" fill="#1e293b" />
+              <text x="55" y="175" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">A</text>
+
+              <circle cx="250" cy="170" r="3.5" fill="#1e293b" />
+              <text x="258" y="175" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">B</text>
+
+              <circle cx="160" cy="170" r="3.5" fill="#1e293b" />
+              <text x="155" y="190" font-size="14" font-weight="bold" fill="#1e293b" font-family="serif">M</text>
+
+              <!-- Red tick marks on AM and BM -->
+              <line x1="115" y1="165" x2="115" y2="175" stroke="#ef4444" stroke-width="2.5" />
+              <line x1="205" y1="165" x2="205" y2="175" stroke="#ef4444" stroke-width="2.5" />
+
+              <!-- Red right angle mark at M -->
+              <path d="M 160 160 L 170 160 L 170 170" fill="none" stroke="#ef4444" stroke-width="2" />
+
+              ${showMarks ? `
+                <text x="168" y="115" font-size="11" fill="#10b981" font-weight="bold">共通な辺 PM</text>
               ` : ''}
             </svg>
           `;
@@ -1070,6 +1216,7 @@
     const detailsHypoConc = document.getElementById("details-hypo-conc");
     const btnToggleMarks = document.getElementById("btn-toggle-marks");
     const markText = document.getElementById("mark-text");
+    const btnChangeImage = document.getElementById("btn-change-image");
 
     const tabMode1 = document.getElementById("tab-mode-1");
     const tabMode2 = document.getElementById("tab-mode-2");
@@ -1108,6 +1255,16 @@
     const aiChatBox = document.getElementById("ai-chat-box");
     const aiCustomInput = document.getElementById("ai-custom-input");
     const btnSendCustomAi = document.getElementById("btn-send-custom-ai");
+
+    // Image Modal Elements
+    const modalImage = document.getElementById("modal-image");
+    const btnCloseImageModal = document.getElementById("btn-close-image-modal");
+    const btnDoneImageModal = document.getElementById("btn-done-image-modal");
+    const currentProbName = document.getElementById("current-prob-name");
+    const inputDeviceImage = document.getElementById("input-device-image");
+    const inputImagePath = document.getElementById("input-image-path");
+    const btnSaveImagePath = document.getElementById("btn-save-image-path");
+    const btnResetDefaultFig = document.getElementById("btn-reset-default-fig");
 
     // Teacher Auth & Settings Modals
     const modalAuth = document.getElementById("modal-auth");
@@ -1152,7 +1309,7 @@
       problemHypotheses.innerHTML = prob.hypotheses.map(h => `<div>・${h}</div>`).join("");
       problemConclusion.textContent = `・${prob.conclusion}`;
 
-      // Figure SVG
+      // Figure: check custom stored image or default image or SVG
       renderFigure();
 
       // Reset & Setup Level 1 options
@@ -1183,12 +1340,25 @@
     }
 
     function renderFigure() {
-      figureContainer.innerHTML = currentProblem.svg(showMarks);
+      const customImg = localStorage.getItem("custom_fig_" + currentProblem.id) || currentProblem.image;
+
+      if (customImg) {
+        figureContainer.innerHTML = `
+          <div class="relative w-full h-full flex flex-col items-center justify-center p-1">
+            <img id="figure-img-element" src="${customImg}" alt="${currentProblem.title}の図" class="max-h-[220px] max-w-full object-contain rounded-lg border border-slate-200 bg-white shadow-sm" onerror="this.style.display='none'; document.getElementById('svg-fallback-box').style.display='block';">
+            <div id="svg-fallback-box" style="display:none;" class="w-full h-full flex items-center justify-center">
+              ${currentProblem.svg(showMarks)}
+            </div>
+          </div>
+        `;
+      } else {
+        figureContainer.innerHTML = currentProblem.svg(showMarks);
+      }
     }
 
     // --- Setup Level 1 Dropdown Options ---
     function setupLevel1Options() {
-      const triOptions = ["選択してください", currentProblem.tri1, currentProblem.tri2, "ABC", "ACD", "AOD", "BOC", "ACM", "BDM", "ABD", "AOC", "BOC", "AED", "BEC", "ACO", "BDO", "DCB", "ADE"];
+      const triOptions = ["選択してください", currentProblem.tri1, currentProblem.tri2, "ABC", "ACD", "AOD", "BOC", "ACM", "BDM", "ABD", "AOC", "BOC", "AED", "BEC", "ACO", "BDO", "DCB", "ADE", "APM", "BQM", "PAM", "PBM"];
       const uniqueTri = [...new Set(triOptions)];
 
       const populateSelect = (el, arr) => {
@@ -1209,6 +1379,8 @@
         "選択してください",
         "仮定より",
         "仮定（中点）より",
+        "仮定（垂直）より",
+        "仮定（二等分線）より",
         "作図より",
         "対頂角は等しいから",
         "平行線の錯角は等しいから",
@@ -1227,8 +1399,11 @@
         "AB = AC",
         "AD = BC",
         "OA = OD",
+        "AM = BM",
+        "PM = PM",
         "∠A = ∠B",
-        "∠C = ∠C"
+        "∠C = ∠C",
+        "∠PMA = ∠PMB"
       ];
       const uniqueEq = [...new Set(eqOptions)];
       populateSelect(l1Eq1, uniqueEq);
@@ -1244,14 +1419,26 @@
       ];
       populateSelect(l1Condition, condOptions);
 
-      // Conclusions
-      const concOptions = [
-        "選択してください",
-        currentProblem.conclusion,
-        `△${currentProblem.tri1} ＝ △${currentProblem.tri2}`,
-        `△${currentProblem.tri1} ∽ △${currentProblem.tri2}`,
-        `AB ＝ CD`
-      ];
+      // Conclusions (Supports direct congruence OR corresponding parts)
+      const isCorrespondingPart = !currentProblem.conclusion.includes("△");
+      let concOptions = [];
+      if (isCorrespondingPart) {
+        concOptions = [
+          "選択してください",
+          `△${currentProblem.tri1} ≡ △${currentProblem.tri2} より、対応する辺は等しいから ${currentProblem.conclusion}`,
+          `△${currentProblem.tri1} ≡ △${currentProblem.tri2}`,
+          `△${currentProblem.tri1} ＝ △${currentProblem.tri2}`,
+          `AM ＝ BM`
+        ];
+      } else {
+        concOptions = [
+          "選択してください",
+          currentProblem.conclusion,
+          `△${currentProblem.tri1} ＝ △${currentProblem.tri2}`,
+          `△${currentProblem.tri1} ∽ △${currentProblem.tri2}`,
+          `AB ＝ CD`
+        ];
+      }
       populateSelect(l1Conclusion, concOptions);
     }
 
@@ -1329,8 +1516,15 @@
       }
 
       // Check Conclusion
-      if (conc !== currentProblem.conclusion) {
-        errors.push(`・結論：「${currentProblem.conclusion}」となるはずです。記号『≡』を使っているか確認しましょう。`);
+      const isCorrespondingPart = !currentProblem.conclusion.includes("△");
+      if (isCorrespondingPart) {
+        if (!conc.includes(currentProblem.conclusion) || !conc.includes("対応する辺")) {
+          errors.push(`・結論：合同を導いたあと、「対応する辺は等しいから、${currentProblem.conclusion}」と結びましょう。`);
+        }
+      } else {
+        if (conc !== currentProblem.conclusion) {
+          errors.push(`・結論：「${currentProblem.conclusion}」となるはずです。記号『≡』を使っているか確認しましょう。`);
+        }
       }
 
       if (errors.length === 0) {
@@ -1373,7 +1567,7 @@
           } else if (step === "step3") {
             hintBox.textContent = `💡 ヒント：見つけた3つの等式は【辺】と【角】のどちらかな？辺が何組、角が何組あるか確認して、ぴったりの合同条件を選ぼう！`;
           } else if (step === "step4") {
-            hintBox.textContent = `💡 ヒント：最後は合同を表す記号「≡」を使って、2つの三角形を結びましょう。`;
+            hintBox.textContent = `💡 ヒント：最後は合同を表す記号「≡」を結びます。辺や角の等しさを証明したいときは「合同な図形の対応する辺（角）は等しいから、…」と続けましょう。`;
           }
         }
       });
@@ -1395,8 +1589,8 @@
       if (!s3.includes("それぞれ等しい") && !s3.includes("等しい")) {
         hints.push(`・ステップ3：合同条件の言葉（〜それぞれ等しいから、）を正確に書けているか確認しましょう。`);
       }
-      if (!s4.includes("≡")) {
-        hints.push("・ステップ4：結論には合同を表す記号『≡』を使いましょう。");
+      if (!s4.includes("≡") && !s4.includes("＝") && !s4.includes("=")) {
+        hints.push("・ステップ4：結論には『≡』または『＝』を使いましょう。");
       }
 
       l2Feedback.className = "rounded-lg p-4 text-sm leading-relaxed block border";
@@ -1434,6 +1628,23 @@
       appendAiMessage(`Lv.2で入力したステップをLv.3にまとめました！文章のつながりや記号をチェックして、完成を目指そう！`);
     });
 
+        // --- Level 2 Symbol Palette (Dedicated Keypad) ---
+    let lastFocusedL2Input = l2InputStep1;
+    [l2InputStep1, l2InputStep2, l2InputStep3, l2InputStep4].forEach(input => {
+      input.addEventListener("focus", () => {
+        lastFocusedL2Input = input;
+      });
+    });
+
+    document.querySelectorAll(".btn-symbol-l2").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const sym = e.target.textContent;
+        const targetInput = lastFocusedL2Input || l2InputStep1;
+        insertAtCursor(targetInput, sym);
+      });
+    });
+
     // --- Level 3 Symbol Palette ---
     document.querySelectorAll(".btn-symbol").forEach(btn => {
       btn.addEventListener("click", (e) => {
@@ -1456,6 +1667,60 @@
       charCount.textContent = `${l3Textarea.value.length} 文字`;
     }
     l3Textarea.addEventListener("input", updateCharCount);
+
+    // --- Image Replacement Handler ---
+    btnChangeImage.addEventListener("click", () => {
+      currentProbName.textContent = `${currentProblem.badge}：${currentProblem.title}`;
+      inputImagePath.value = localStorage.getItem("custom_fig_path_" + currentProblem.id) || currentProblem.image || "";
+      modalImage.classList.remove("hidden");
+    });
+
+    const closeImageModal = () => modalImage.classList.add("hidden");
+    btnCloseImageModal.addEventListener("click", closeImageModal);
+    btnDoneImageModal.addEventListener("click", closeImageModal);
+
+    // Device File Picker (Reads as DataURL and saves to localStorage)
+    inputDeviceImage.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target.result;
+        try {
+          localStorage.setItem("custom_fig_" + currentProblem.id, dataUrl);
+          renderFigure();
+          closeImageModal();
+          appendAiMessage(`📷 【${currentProblem.badge}】の図を選択された画像に差し替えました！`);
+        } catch (err) {
+          appendAiMessage("⚠️ 画像サイズが大きすぎるため保存できませんでした。小さめの画像をお試しください。"); closeImageModal();
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // GitHub path / URL save
+    btnSaveImagePath.addEventListener("click", () => {
+      const path = inputImagePath.value.trim();
+      if (path) {
+        localStorage.setItem("custom_fig_" + currentProblem.id, path);
+        localStorage.setItem("custom_fig_path_" + currentProblem.id, path);
+        renderFigure();
+        closeImageModal();
+        appendAiMessage(`📷 【${currentProblem.badge}】の画像パスを「${path}」に設定しました！`);
+      }
+    });
+
+    // Reset to default SVG
+    btnResetDefaultFig.addEventListener("click", () => {
+      localStorage.removeItem("custom_fig_" + currentProblem.id);
+      localStorage.removeItem("custom_fig_path_" + currentProblem.id);
+      inputImagePath.value = "";
+      inputDeviceImage.value = "";
+      renderFigure();
+      closeImageModal();
+      appendAiMessage(`↺ 【${currentProblem.badge}】の図をデフォルトに戻しました。`);
+    });
 
     // --- AI Socratic Advice Engine (Local Fallback + Gemini API) ---
     function appendUserMessage(text) {
@@ -1496,10 +1761,10 @@
         const studentProof = l3Textarea.value.trim();
 
         let promptQuestion = "";
-        if (qType === "start") promptQuestion = "書き始めのヒントを教えてください。";
-        else if (qType === "reasons") promptQuestion = "等しい理由の書き方は合っていますか？";
-        else if (qType === "condition") promptQuestion = "どの合同条件を使えばいいか相談したいです。";
-        else if (qType === "full") promptQuestion = "全体の証明をチェックしてアドバイスをください。";
+        if (qType === "start") promptQuestion = "着目する三角形の見つけ方と、書き始めのヒントを教えてください。";
+        else if (qType === "reasons") promptQuestion = "等しい3つの根拠（理由と式）が揃っているかチェックしてください。";
+        else if (qType === "condition") promptQuestion = "集めた根拠から、どの合同条件が使えるか相談したいです。";
+        else if (qType === "rubric" || qType === "full") promptQuestion = "論理の流れを診断して、より良い証明にするためのブラッシュアップのアドバイスをください。";
 
         appendUserMessage(promptQuestion);
         await handleAiConsultation(qType, promptQuestion, studentProof);
@@ -1553,7 +1818,7 @@
       }, 500);
     }
 
-    // Local Pedagogical Rule Engine for Congruence
+    // Local Pedagogical Rule Engine for Research Lessons (Formative Rubric)
     function generateLocalSocraticAdvice(qType, question, proof) {
       const prob = currentProblem;
       const cleanProof = proof.replace(/\s+/g, "");
@@ -1561,88 +1826,145 @@
       if (qType === "start" || cleanProof.length === 0) {
         return `まずは<strong>「着目する2つの三角形」</strong>を宣言することから始めましょう！<br>
           問題文の図を見て、合同を言いたい2つの三角形を見つけられますか？<br>
-          書き出しは<strong>『△… と △… において、』</strong>となります。頂点の対応順序に注意して書いてみよう！`;
+          書き出しは<strong>『△… と △… において、』</strong>となります。<br>
+          <span class="text-indigo-600 font-semibold">💡 ポイント：対応する頂点の順序（例えば点Aに対応する点）をそろえて書いてみよう！</span>`;
       }
 
       if (qType === "condition") {
         return `合同条件を選ぶコツは、見つけた<strong>「3つの等しいパーツ」が【辺】なのか【角】なのか</strong>を数えることです。<br>
-          ・辺が3組なら「3組の辺がそれぞれ等しい」<br>
-          ・辺が2組と角が1組なら「2組の辺とその間の角がそれぞれ等しい」<br>
-          ・辺が1組と角が2組なら「1組の辺とその両端の角がそれぞれ等しい」<br>
-          この問題【${prob.badge}】で集めた①, ②, ③のパーツを見直してみよう！`;
+          ・辺が3組なら → <strong>「3組の辺がそれぞれ等しい」</strong><br>
+          ・辺が2組と角が1組なら → <strong>「2組の辺とその間の角がそれぞれ等しい」</strong><br>
+          ・辺が1組と角が2組なら → <strong>「1組の辺とその両端の角がそれぞれ等しい」</strong><br>
+          この問題【${prob.badge}】で集めた①, ②, ③のパーツ（辺と角）を数えてみよう！`;
       }
 
       if (qType === "reasons") {
         let feedback = [];
-        if (prob.condition.includes("3組の辺")) {
+        if (prob.id === "prob10") {
+          if (!proof.includes("錯角")) {
+            feedback.push("・平行線（l // m）がありますね！平行線の錯角を探してみましょう。");
+          }
+          if (!proof.includes("対頂角")) {
+            feedback.push("・点Mで交差している向かい合った角（対頂角）にも注目してみよう！");
+          }
+          if (!proof.includes("中点") && !proof.includes("仮定")) {
+            feedback.push("・MはABの中点なので、AM = BM ですね！");
+          }
+        } else if (prob.id === "prob11") {
+          if (!proof.includes("垂直") && !proof.includes("90")) {
+            feedback.push("・垂直二等分線なので、∠PMA = ∠PMB = 90°（直角）ですね！");
+          }
           if (!proof.includes("共通")) {
-            feedback.push("2つの三角形でぴったり重なっている辺（共通な辺）に注目してみよう！『〇〇は共通な辺だから、』と書けます。");
+            feedback.push("・2つの直角三角形で重なっている辺（PM）に注目してみよう！『PMは共通だから、』と書けます。");
+          }
+        } else if (prob.condition.includes("3組の辺")) {
+          if (!proof.includes("共通")) {
+            feedback.push("・2つの三角形でぴったり重なっている辺（共通な辺）に注目してみよう！『〇〇は共通な辺だから、』と書けます。");
           }
           if (prob.id === "prob4" && !proof.includes("作図") && !proof.includes("半径")) {
-            feedback.push("コンパスで作図した円の半径に注目してみよう！『作図より、』と書けます。");
+            feedback.push("・コンパスで作図した円の半径に注目してみよう！『作図より、』と書けます。");
           }
         } else if (prob.id === "prob5") {
           if (!proof.includes("錯角")) {
-            feedback.push("平行線（AD // CB）がありますね！平行線の間にある「Zの字」の角（錯角）を探してみましょう。");
+            feedback.push("・平行線（AD // CB）がありますね！平行線の間にある「Zの字」の角（錯角）を探してみましょう。");
           }
           if (!proof.includes("対頂角")) {
-            feedback.push("交わった線分の向かい合った角（対頂角）にも注目してみよう！");
+            feedback.push("・交わった線分の向かい合った角（対頂角）にも注目してみよう！");
           }
         } else if (prob.id === "prob9") {
           if (!proof.includes("共通")) {
-            feedback.push("2つの三角形が重なっている角（∠A）に注目してみよう！『∠Aは共通だから、』と書けます。");
+            feedback.push("・2つの三角形が重なっている角（∠A）に注目してみよう！『∠Aは共通だから、』と書けます。");
           }
         } else {
           if (!proof.includes("対頂角")) {
-            feedback.push("交わった2本の直線によってできる向かい合った角（対頂角）に注目してみよう！『対頂角は等しいから、』という理由が使えます。");
+            feedback.push("・交わった2本の直線によってできる向かい合った角（対頂角）に注目してみよう！『対頂角は等しいから、』という理由が使えます。");
           }
         }
 
         if (feedback.length === 0) {
-          return `素晴らしい着眼点です！等しい理由がしっかり書けています。等式ごとに『… ①』『… ②』『… ③』と番号を振るのも忘れないようにしましょう！`;
+          return `🌟 <strong>素晴らしい着眼点です！必要な根拠がしっかり揃っています！</strong><br>式ごとに『… ①』『… ②』『… ③』と番号を振るのも忘れないようにしましょう！`;
         } else {
-          return `ここをチェックしてみてね：<br>${feedback.join("<br>")}`;
+          return `🌱 <strong>良い調子です！あと少し補うとさらに説得力が増しますよ：</strong><br>${feedback.join("<br>")}`;
         }
       }
 
-      // Full check
-      const hasTriangles = proof.includes("△") && proof.includes("において");
-      const hasNumbers = proof.includes("①") && proof.includes("②") && proof.includes("③");
-      const hasCondition = proof.includes("等しいから") || proof.includes("合同条件");
-      const hasConclusion = proof.includes("≡");
+      // --- Rubric Diagnosis (Formative Assessment for Research Lessons) ---
+      const hasTriangles = proof.includes("△") && (proof.includes("において") || proof.includes("と"));
+      const hasNumbers = proof.includes("①") || proof.includes("②") || proof.includes("③") || proof.includes("1") || proof.includes("2");
+      const hasCondition = proof.includes("等しいから") || proof.includes("合同条件") || proof.includes("組の辺") || proof.includes("組の角");
+      const hasConclusion = proof.includes("≡") || proof.includes("＝") || proof.includes("=") || proof.includes("したがって") || proof.includes("より");
 
-      if (hasTriangles && hasNumbers && hasCondition && hasConclusion) {
-        return `🎉 <strong>素晴らしい！証明の骨組みがすべて揃っています！</strong><br>
-          ・三角形の宣言：OK<br>
-          ・3つの根拠と番号：OK<br>
-          ・合同条件：OK<br>
-          ・結論（≡）：OK<br>
-          頂点の対応順序も綺麗に揃っているか、もう一度見直せば完璧です！自信を持って先生に見せられますね！`;
+      // Check corresponding vertices order
+      let vertexAdvice = "";
+      if (hasTriangles) {
+        vertexAdvice = `・<strong>対応順の確認</strong>：『△${prob.tri1} と △${prob.tri2}』のように、対応する頂点の順番が図とぴったり合っているか見直してみよう！`;
       }
 
-      let checkList = [];
-      if (!hasTriangles) checkList.push("・書き始め：どの三角形に着目したか（『△… と △… において、』）が抜けています。");
-      if (!hasNumbers) checkList.push("・3つの根拠：理由と式に『①, ②, ③』と番号をつけて引用しやすくしましょう。");
-      if (!hasCondition) checkList.push("・合同条件：『①, ②, ③より、（合同条件）から』という一文を入れましょう。");
-      if (!hasConclusion) checkList.push("・結論：最後に『したがって △… ≡ △…』と結論を結びましょう。");
+      // Rubric Level 3: Complete structure
+      if (hasTriangles && hasNumbers && hasCondition && hasConclusion) {
+        return `🎉 <strong>素晴らしい論理展開です！証明の骨組みがバッチリ完成しています！</strong><br>
+          【診断ルブリック結果】：<br>
+          ✅ 三角形の着目宣言：OK<br>
+          ✅ 根拠の整理（①②③）：OK<br>
+          ✅ 合同条件の適用：OK<br>
+          ✅ 結論への接続：OK<br><br>
+          ${vertexAdvice ? vertexAdvice + '<br>' : ''}
+          ${!prob.conclusion.includes("△") ? `💡 仕上げの確認：合同が言えた後、『合同な図形の対応する辺は等しいから、${prob.conclusion}』と結べているかもチェックしてみてね！` : 'このまま自信を持って発表やノート記録に進められます！'}`;
+      }
 
-      return `あと一歩です！次の部分を付け足してみよう：<br>${checkList.join("<br>")}`;
+      // Rubric Level 2: Core logic present, needs refinement
+      // (Even if reasons are partially incomplete, acknowledge logical flow!)
+      let adviceSteps = [];
+      if (!hasTriangles) {
+        adviceSteps.push("・どの2つの三角形に着目したか（『△… と △… において、』）を書き出しに入れましょう。");
+      }
+      if (!hasNumbers) {
+        adviceSteps.push("・見つけた等しい式に『… ①』『… ②』『… ③』と番号を振ると、合同条件に引用しやすくなります。");
+      }
+      if (!hasCondition) {
+        adviceSteps.push("・見つけた根拠から言える『三角形の合同条件（〜それぞれ等しいから、）』をつなげましょう。");
+      }
+      if (!hasConclusion) {
+        if (!prob.conclusion.includes("△")) {
+          adviceSteps.push(`・最後に『合同な図形の対応する辺は等しいから、${prob.conclusion}』とゴールを結びましょう。`);
+        } else {
+          adviceSteps.push(`・最後に『したがって △… ≡ △…』と結論を結びましょう。`);
+        }
+      }
+
+      return `🌱 <strong>論理の筋道はしっかり捉えられています！基本方針はバッチリです！</strong><br>
+        全体の構成をより説得力のある満点の証明にブラッシュアップするためのヒント：<br>
+        ${adviceSteps.join("<br>")}<br>
+        ${vertexAdvice ? `<span class="text-indigo-600 font-semibold mt-1 block">${vertexAdvice}</span>` : ''}
+        少しずつ付け足して、完成を目指そう！`;
     }
 
     // Call Gemini API (1.5 Flash)
     async function callGeminiApi(question, proof) {
-      const systemInstruction = `あなたは中学校の優しい数学の先生です。現在、中学2年生が「4章 平行と合同」の単元で三角形の合同の証明問題に取り組んでいます。
-対象問題：${currentProblem.badge} ${currentProblem.title}
+      const systemInstruction = `あなたは中学校数学科の研究授業を支援する、生徒の伴走者としての温かい数学の先生（AI学習パートナー）です。
+現在、中学2年生が「4章 平行と合同」の単元で三角形の合同の証明問題に取り組んでいます。
+
+【対象問題の情報】
+問題：${currentProblem.badge} ${currentProblem.title}
 問題文：${currentProblem.text}
+着目する三角形：△${currentProblem.tri1} と △${currentProblem.tri2}
 仮定：${currentProblem.hypotheses.join(", ")}
 結論：${currentProblem.conclusion}
-模範的な合同条件：${currentProblem.condition}
-根拠となる理由：${currentProblem.reasons.map(r => r.type + ":" + r.eq).join(", ")}
+合同条件：${currentProblem.condition}
+根拠となる理由の正解例：${currentProblem.reasons.map(r => r.type + ": " + r.eq).join(", ")}
 
-指導方針（厳格遵守）：
-1. 答えそのもの（完成した証明全文や、ズバリの等式・記号順）を生徒に直接教えてはいけません。
-2. 生徒が書いた内容（入力された証明）を褒めつつ、抜けている論理や次のステップについて、ソクラテス式に優しく問いかけてください。
-3. 中学生が理解しやすいよう、平易な言葉と適切な改行を用いて150〜250字程度で簡潔に返答してください。`;
+【研究授業に向けた評価基準（ルブリック）と指導方針】：
+1. 【認知的承認（基本OK）】：
+   ・三角形の宣言、等しい根拠、合同条件、結論という「論理の骨組み」を組み立てようとしている姿勢をまず全力で褒め、肯定してください。
+   ・根拠が一部不足していたり、言葉遣いが不十分でも、論理が破綻していなければ「筋道はバッチリ捉えられていますよ！」「この方針で合っています！」と基本OKとして生徒に安心感と自己効力感を与えてください。
+2. 【対応順の確認（精密化）】：
+   ・着目した2つの三角形の頂点の対応順（例：点Aに対応するのは点B）が揃っているか確認を促してください。「Aに対応するのはどの点かな？頂点の順番を図と照らし合わせてみよう！」と優しく促します。
+3. 【根拠のブラッシュアップ（深化）】：
+   ・3組の根拠のうち不足している点（対頂角、平行線の錯角、中点、共通な辺など）があれば、答えを直接言わずに「あと1つ、〇〇（図で交わっている角／平行線の錯角など）に注目してみると、さらに説得力が増しますよ！」とソクラテス式にヒントを出してください。
+4. 【発展の結論（辺や角の等しさ）】：
+   ・合同の後に辺の等しさ（AP=BQやPA=PBなど）を証明する問題の場合、「合同が言えたら、最後に『合同な図形の対応する辺は等しいから』と結ぶとゴールです！」と導いてください。
+5. 【文体・トーン】：
+   ・平易な言葉で、中学生が読みやすいよう適度に改行を入れ、150〜250字程度で簡潔かつ前向きに返答してください。決して「不正解」「間違いです」といった否定的な言葉は使わないでください。`;
 
       const prompt = `生徒からの相談：「${question}」\n\n生徒が今書いている証明文：\n"""\n${proof || "（まだ何も書かれていません）"}\n"""`;
 
@@ -1684,7 +2006,6 @@
       const enteredPass = inputAuthPass.value.trim();
       if (enteredPass === teacherPassword) {
         closeAuthModal();
-        // Open Settings Modal
         inputApiKey.value = apiKey;
         inputChangePass.value = "";
         modalSettings.classList.remove("hidden");
@@ -1726,7 +2047,7 @@
     btnDismissGuide.addEventListener("click", () => modalGuide.classList.add("hidden"));
 
     // Close modal on click backdrop
-    [modalAuth, modalSettings, modalGuide].forEach(m => {
+    [modalAuth, modalSettings, modalGuide, modalImage].forEach(m => {
       m.addEventListener("click", (e) => {
         if (e.target === m) m.classList.add("hidden");
       });
