@@ -958,7 +958,7 @@
         badge: "Level 2-8",
         badgeColor: "bg-amber-50 text-amber-700 border-amber-200",
         title: "交差する2つの三角形（共通な底辺）",
-        text: "右の図で、AB = DC, AC = DB である。このとき、△ABC ≡ △DCB であることを証明しなさい。",
+        text: "下の図で、AB = DC, AC = DB である。このとき、△ABC ≡ △DCB であることを証明しなさい。",
         hypotheses: ["AB = DC", "AC = DB", "BCは共通"],
         conclusion: "△ABC ≡ △DCB",
         tri1: "ABC",
@@ -1006,7 +1006,7 @@
         badge: "Level 2-9",
         badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
         title: "重なり合う三角形（共通な角）",
-        text: "右の図で、BA = DA, ∠B = ∠D である。このとき、△ABC ≡ △ADE であることを証明しなさい。",
+        text: "下の図で、BA = DA, ∠B = ∠D である。このとき、△ABC ≡ △ADE であることを証明しなさい。",
         hypotheses: ["BA = DA", "∠B = ∠D", "∠Aは共通"],
         conclusion: "△ABC ≡ △ADE",
         tri1: "ABC",
@@ -1475,8 +1475,28 @@
       if (selected) loadProblem(selected);
     });
 
-    // --- Level 1 Check Logic ---
-    btnCheckL1.addEventListener("click", () => {
+    // Helper: Check geometric correspondence between two triangles
+    function checkTriangleCorrespondence(t1, t2, s1, s2) {
+      if (!s1 || !s2 || s1.length !== 3 || s2.length !== 3) return false;
+      const t1u = t1.toUpperCase();
+      const t2u = t2.toUpperCase();
+      const s1u = s1.toUpperCase();
+      const s2u = s2.toUpperCase();
+
+      const corr = {};
+      const rev = {};
+      for (let i = 0; i < 3; i++) {
+        corr[t1u[i]] = t2u[i];
+        rev[t2u[i]] = t1u[i];
+      }
+
+      const match1 = (corr[s1u[0]] === s2u[0] && corr[s1u[1]] === s2u[1] && corr[s1u[2]] === s2u[2]);
+      const match2 = (rev[s1u[0]] === s2u[0] && rev[s1u[1]] === s2u[1] && rev[s1u[2]] === s2u[2]);
+      return match1 || match2;
+    }
+
+    // --- Level 1 Check Logic (AI-Powered Feedback) ---
+    btnCheckL1.addEventListener("click", async () => {
       const t1 = l1Tri1.value;
       const t2 = l1Tri2.value;
       const r1 = l1Reason1.value;
@@ -1489,49 +1509,47 @@
       const conc = l1Conclusion.value;
 
       if (!t1 || !t2 || !r1 || !e1 || !r2 || !e2 || !r3 || !e3 || !cond || !conc) {
-        showL1Feedback("warning", "まだ選ばれていない項目があります。すべてのマスを選択してから答え合わせをしましょう！");
+        showL1Feedback("warning", `
+          <div class="flex items-start gap-2.5">
+            <div class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">AI</div>
+            <div class="text-xs sm:text-sm text-amber-900 leading-relaxed font-medium">
+              まだ選ばれていない項目があります。すべてのマスを選択してから答え合わせをしましょう！
+            </div>
+          </div>
+        `);
         return;
       }
 
-      let errors = [];
+      // Show AI loading state
+      l1Feedback.className = "rounded-lg p-3 text-xs sm:text-sm leading-relaxed block border bg-indigo-50 border-indigo-200 text-indigo-900";
+      l1Feedback.innerHTML = `
+        <div class="flex items-center gap-2 italic">
+          <span class="animate-spin text-base">⏳</span>
+          <span>AI先生が答え合わせをしています...</span>
+        </div>
+      `;
 
-      // Check Triangles
-      const validTriOrder = (t1 === currentProblem.tri1 && t2 === currentProblem.tri2);
-      if (!validTriOrder) {
-        errors.push(`・着目する三角形：対応する頂点の順序に注意しましょう（例：△${currentProblem.tri1} と △${currentProblem.tri2}）`);
-      }
+      const studentProofData = {
+        tri1: t1, tri2: t2,
+        r1, e1, r2, e2, r3, e3,
+        condition: cond, conclusion: conc
+      };
 
-      // Check 3 Equations (regardless of permutation order)
-      const expectedEqs = currentProblem.reasons.map(r => r.eq);
-      const studentEqs = [e1, e2, e3];
-      const allEqsFound = expectedEqs.every(exp => studentEqs.includes(exp));
-
-      if (!allEqsFound) {
-        errors.push("・等しい辺や角の式：この問題で言える3つの等式をもう一度見直してみましょう。");
-      }
-
-      // Check Condition
-      if (cond !== currentProblem.condition) {
-        errors.push(`・合同条件：集めた3つの等式（辺と角の組み合わせ）をよく見て、ぴったりの合同条件を選びましょう。`);
-      }
-
-      // Check Conclusion
-      const isCorrespondingPart = !currentProblem.conclusion.includes("△");
-      if (isCorrespondingPart) {
-        if (!conc.includes(currentProblem.conclusion) || !conc.includes("対応する辺")) {
-          errors.push(`・結論：合同を導いたあと、「対応する辺は等しいから、${currentProblem.conclusion}」と結びましょう。`);
-        }
-      } else {
-        if (conc !== currentProblem.conclusion) {
-          errors.push(`・結論：「${currentProblem.conclusion}」となるはずです。記号『≡』を使っているか確認しましょう。`);
+      if (apiKey) {
+        try {
+          const aiResponse = await callGeminiApiForLevel1(studentProofData);
+          renderL1AiResponse(aiResponse);
+          return;
+        } catch (err) {
+          console.warn("Gemini API call failed for Level 1, falling back to local engine:", err);
         }
       }
 
-      if (errors.length === 0) {
-        showL1Feedback("success", `🎉 素晴らしい！完璧です！<br>論理の流れが正しく作れました。次は「Lv.2 標準（ステップ型）」で、自分で文字を入力する練習に進んでみましょう！`);
-      } else {
-        showL1Feedback("error", `惜しい！次のポイントを見直してみよう：<br>${errors.join("<br>")}`);
-      }
+      // Local Pedagogical Rule Engine for Level 1
+      setTimeout(() => {
+        const localResponse = generateLocalLevel1Advice(studentProofData);
+        renderL1AiResponse(localResponse);
+      }, 500);
     });
 
     btnResetL1.addEventListener("click", () => {
@@ -1539,16 +1557,121 @@
       l1Feedback.className = "hidden";
     });
 
-    function showL1Feedback(type, message) {
-      l1Feedback.className = "rounded-lg p-4 text-sm leading-relaxed block border";
-      if (type === "success") {
-        l1Feedback.classList.add("bg-emerald-50", "border-emerald-200", "text-emerald-900");
-      } else if (type === "warning") {
-        l1Feedback.classList.add("bg-amber-50", "border-amber-200", "text-amber-900");
+    function renderL1AiResponse(responseObj) {
+      l1Feedback.className = "rounded-lg p-4 text-xs sm:text-sm leading-relaxed block border shadow-sm " + responseObj.boxClass;
+      l1Feedback.innerHTML = `
+        <div class="flex items-start gap-2.5">
+          <div class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">AI</div>
+          <div class="flex-1 leading-relaxed">
+            ${responseObj.text}
+          </div>
+        </div>
+      `;
+    }
+
+    function generateLocalLevel1Advice(data) {
+      const prob = currentProblem;
+      const validTriOrder = checkTriangleCorrespondence(prob.tri1, prob.tri2, data.tri1, data.tri2);
+
+      const expectedEqs = prob.reasons.map(r => r.eq);
+      const studentEqs = [data.e1, data.e2, data.e3];
+      const allEqsFound = expectedEqs.every(exp => studentEqs.includes(exp));
+
+      const validCond = (data.condition === prob.condition);
+      
+      const isCorrespondingPart = !prob.conclusion.includes("△");
+      let validConc = false;
+      if (isCorrespondingPart) {
+        validConc = data.conclusion.includes(prob.conclusion) && data.conclusion.includes("対応する辺");
       } else {
-        l1Feedback.classList.add("bg-rose-50", "border-rose-200", "text-rose-900");
+        validConc = (data.conclusion === prob.conclusion);
       }
-      l1Feedback.innerHTML = message;
+
+      if (validTriOrder && allEqsFound && validCond && validConc) {
+        return {
+          boxClass: "bg-emerald-50 border-emerald-200 text-emerald-950",
+          text: `🎉 <strong>素晴らしい！完璧に正解です！</strong><br>
+            ・三角形の対応順（△${data.tri1} と △${data.tri2}）：完璧です！<br>
+            ・等しい3組の根拠と式：バッチリ揃っています！<br>
+            ・合同条件（${data.condition}）：正しく見抜けています！<br>
+            ・結論：論理の流れが美しく完結しています！<br><br>
+            証明の骨組みがしっかり身についていますね。次はぜひ<strong>『Lv.2 標準（ステップ型）』</strong>に進んで、自分の言葉でキーボード入力する練習に挑戦してみよう！`
+        };
+      }
+
+      // Socratic encouragement with specific guidance
+      let hints = [];
+      if (!validTriOrder) {
+        hints.push(`・<strong>着目する三角形</strong>：頂点の対応順（点Aに対応する点など）を見直してみよう！（正解の組み合わせ：△${prob.tri1} と △${prob.tri2}）`);
+      }
+      if (!allEqsFound) {
+        hints.push(`・<strong>等しい3つの等式</strong>：図の印や問題文をよく見て、等しい辺や角の式を正しく選べているか見直してみよう。`);
+      }
+      if (!validCond) {
+        hints.push(`・<strong>合同条件</strong>：集めた3つの等式を数えてみてね（【辺】が何組、【角】が何組あるかな？）。それにぴったりの合同条件を選ぼう！`);
+      }
+      if (!validConc) {
+        if (isCorrespondingPart) {
+          hints.push(`・<strong>結論</strong>：合同が導けた後、「対応する辺は等しいから ${prob.conclusion}」となる選択肢を選びましょう。`);
+        } else {
+          hints.push(`・<strong>結論</strong>：最後は合同を表す記号「≡」を使った結論「${prob.conclusion}」を選びましょう。`);
+        }
+      }
+
+      return {
+        boxClass: "bg-amber-50 border-amber-200 text-amber-950",
+        text: `🌱 <strong>惜しい！あと少しで見直せますよ！</strong><br>
+          次のポイントをもう一度図と照らし合わせてみよう：<br>
+          ${hints.join("<br>")}<br>
+          <span class="text-indigo-700 font-semibold mt-1.5 block">💡 選び直したら、もう一度「答え合わせ」を押してみてね！</span>`
+      };
+    }
+
+    async function callGeminiApiForLevel1(data) {
+      const prob = currentProblem;
+      const prompt = `生徒がレベル1（穴埋め選択問題）で以下の証明文を組み立てました。
+
+【生徒の解答内容】
+1. 着目する三角形：△${data.tri1} と △${data.tri2} において、
+2. 根拠①：${data.r1}より、${data.e1}
+3. 根拠②：${data.r2}より、${data.e2}
+4. 根拠③：${data.r3}より、${data.e3}
+5. 合同条件：①, ②, ③より、${data.condition}から、
+6. 結論：${data.conclusion}
+
+この解答を先生として温かく採点・アドバイスしてください。
+すべて正しければ大いに褒め、もし誤り（対応順のズレや等式の間違い、合同条件の選び間違いなど）があれば、答えそのものは言わずに生徒が自分で気づける優しいヒントを与えてください。150字程度で簡潔に返答してください。`;
+
+      const systemInstruction = `あなたは中学校数学科の温かい数学教師です。中学2年生が「4章 平行と合同」の単元で合同の証明（穴埋め選択問題）に取り組んでいます。
+問題：${prob.badge} ${prob.title}
+問題文：${prob.text}
+着目三角形正解：△${prob.tri1} と △${prob.tri2}
+根拠正解例：${prob.reasons.map(r => r.type + ":" + r.eq).join(", ")}
+合同条件正解：${prob.condition}
+結論正解：${prob.conclusion}
+
+生徒の選択内容を評価し、肯定的にアドバイスしてください。決して否定的な言葉は使わず、前向きに導いてください。`;
+
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          systemInstruction: { parts: [{ text: systemInstruction }] }
+        })
+      });
+
+      if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
+      const resData = await res.json();
+      const answer = resData.candidates?.[0]?.content?.parts?.[0]?.text;
+      
+      const isSuccess = generateLocalLevel1Advice(data).boxClass.includes("emerald");
+      return {
+        boxClass: isSuccess ? "bg-emerald-50 border-emerald-200 text-emerald-950" : "bg-amber-50 border-amber-200 text-amber-950",
+        text: answer ? answer.replace(/\n/g, "<br>") : generateLocalLevel1Advice(data).text
+      };
     }
 
     // --- Level 2 Step Hints & Validation ---
@@ -1679,22 +1802,55 @@
     btnCloseImageModal.addEventListener("click", closeImageModal);
     btnDoneImageModal.addEventListener("click", closeImageModal);
 
-    // Device File Picker (Reads as DataURL and saves to localStorage)
+    // Device File Picker with Automatic Resizing/Compression for iPad/Mobile
     inputDeviceImage.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
       reader.onload = (event) => {
-        const dataUrl = event.target.result;
-        try {
-          localStorage.setItem("custom_fig_" + currentProblem.id, dataUrl);
-          renderFigure();
+        const rawDataUrl = event.target.result;
+        const img = new Image();
+        img.onload = () => {
+          // Downscale to max 800px width/height to keep size under 100KB for localStorage
+          const maxDim = 800;
+          let w = img.width;
+          let h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+
+          // Compress to lightweight JPEG or PNG
+          const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.85);
+
+          try {
+            localStorage.setItem("custom_fig_" + currentProblem.id, compressedDataUrl);
+            renderFigure();
+            closeImageModal();
+            appendAiMessage(`📷 【${currentProblem.badge}】の図を選択された画像に差し替えました！（軽量化して安全に保存しました）`);
+          } catch (err) {
+            // Extreme fallback if localStorage is totally full
+            appendAiMessage("⚠️ ブラウザの空き容量が不足しています。一度不要なデータを削除してお試しください。");
+            closeImageModal();
+          }
+        };
+        img.onerror = () => {
+          appendAiMessage("⚠️ 画像の読み込みに失敗しました。別の画像形式をお試しください。");
           closeImageModal();
-          appendAiMessage(`📷 【${currentProblem.badge}】の図を選択された画像に差し替えました！`);
-        } catch (err) {
-          appendAiMessage("⚠️ 画像サイズが大きすぎるため保存できませんでした。小さめの画像をお試しください。"); closeImageModal();
-        }
+        };
+        img.src = rawDataUrl;
       };
       reader.readAsDataURL(file);
     });
@@ -1894,10 +2050,20 @@
       const hasCondition = proof.includes("等しいから") || proof.includes("合同条件") || proof.includes("組の辺") || proof.includes("組の角");
       const hasConclusion = proof.includes("≡") || proof.includes("＝") || proof.includes("=") || proof.includes("したがって") || proof.includes("より");
 
-      // Check corresponding vertices order
+      // Extract triangles written by student to check exact vertex correspondence
       let vertexAdvice = "";
-      if (hasTriangles) {
-        vertexAdvice = `・<strong>対応順の確認</strong>：『△${prob.tri1} と △${prob.tri2}』のように、対応する頂点の順番が図とぴったり合っているか見直してみよう！`;
+      const triMatches = [...proof.matchAll(/△\s*([A-Za-z]{3})/g)];
+      if (triMatches.length >= 2) {
+        const s1 = triMatches[0][1];
+        const s2 = triMatches[1][1];
+        const isCorr = checkTriangleCorrespondence(prob.tri1, prob.tri2, s1, s2);
+        if (isCorr) {
+          vertexAdvice = `✅ <strong>頂点の対応順</strong>：バッチリ合っています！（△${s1} と △${s2} の対応が正しく揃っています）`;
+        } else {
+          vertexAdvice = `💡 <strong>頂点の対応順</strong>：『△${s1} と △${s2}』となっています。点${s1[0]}に対応する頂点、点${s1[1]}に対応する頂点を図でもう一度確認して、対応順が揃っているか見直してみよう！（正解例：△${prob.tri1} と △${prob.tri2}）`;
+        }
+      } else if (hasTriangles) {
+        vertexAdvice = `💡 <strong>着目する三角形</strong>：『△… と △… において、』の形で、対応する頂点の順序を揃えて書いてみよう！（例：△${prob.tri1} と △${prob.tri2}）`;
       }
 
       // Rubric Level 3: Complete structure
@@ -1905,15 +2071,14 @@
         return `🎉 <strong>素晴らしい論理展開です！証明の骨組みがバッチリ完成しています！</strong><br>
           【診断ルブリック結果】：<br>
           ✅ 三角形の着目宣言：OK<br>
+          ${vertexAdvice ? vertexAdvice + '<br>' : ''}
           ✅ 根拠の整理（①②③）：OK<br>
           ✅ 合同条件の適用：OK<br>
           ✅ 結論への接続：OK<br><br>
-          ${vertexAdvice ? vertexAdvice + '<br>' : ''}
           ${!prob.conclusion.includes("△") ? `💡 仕上げの確認：合同が言えた後、『合同な図形の対応する辺は等しいから、${prob.conclusion}』と結べているかもチェックしてみてね！` : 'このまま自信を持って発表やノート記録に進められます！'}`;
       }
 
       // Rubric Level 2: Core logic present, needs refinement
-      // (Even if reasons are partially incomplete, acknowledge logical flow!)
       let adviceSteps = [];
       if (!hasTriangles) {
         adviceSteps.push("・どの2つの三角形に着目したか（『△… と △… において、』）を書き出しに入れましょう。");
@@ -1935,10 +2100,9 @@
       return `🌱 <strong>論理の筋道はしっかり捉えられています！基本方針はバッチリです！</strong><br>
         全体の構成をより説得力のある満点の証明にブラッシュアップするためのヒント：<br>
         ${adviceSteps.join("<br>")}<br>
-        ${vertexAdvice ? `<span class="text-indigo-600 font-semibold mt-1 block">${vertexAdvice}</span>` : ''}
+        ${vertexAdvice ? `<span class="mt-1 block">${vertexAdvice}</span>` : ''}
         少しずつ付け足して、完成を目指そう！`;
     }
-
     // Call Gemini API (1.5 Flash)
     async function callGeminiApi(question, proof) {
       const systemInstruction = `あなたは中学校数学科の研究授業を支援する、生徒の伴走者としての温かい数学の先生（AI学習パートナー）です。
@@ -1957,8 +2121,10 @@
 1. 【認知的承認（基本OK）】：
    ・三角形の宣言、等しい根拠、合同条件、結論という「論理の骨組み」を組み立てようとしている姿勢をまず全力で褒め、肯定してください。
    ・根拠が一部不足していたり、言葉遣いが不十分でも、論理が破綻していなければ「筋道はバッチリ捉えられていますよ！」「この方針で合っています！」と基本OKとして生徒に安心感と自己効力感を与えてください。
-2. 【対応順の確認（精密化）】：
-   ・着目した2つの三角形の頂点の対応順（例：点Aに対応するのは点B）が揃っているか確認を促してください。「Aに対応するのはどの点かな？頂点の順番を図と照らし合わせてみよう！」と優しく促します。
+2. 【最重要：頂点の対応順の厳格チェック】：
+   ・生徒が書いた三角形の頂点順を厳密にチェックしてください（正解例：△${currentProblem.tri1} と △${currentProblem.tri2}）。
+   ・対応順が合っている場合：「頂点の対応順も正しく綺麗に揃っています！」と明確に褒めてください。「対応順を見直そう」といった不要な指摘は絶対にしないでください。
+   ・対応順がズレている場合のみ：「点〇に対応する頂点はどれかな？頂点の順序を図と見比べてみよう」と具体的にヒントを出してください。
 3. 【根拠のブラッシュアップ（深化）】：
    ・3組の根拠のうち不足している点（対頂角、平行線の錯角、中点、共通な辺など）があれば、答えを直接言わずに「あと1つ、〇〇（図で交わっている角／平行線の錯角など）に注目してみると、さらに説得力が増しますよ！」とソクラテス式にヒントを出してください。
 4. 【発展の結論（辺や角の等しさ）】：
