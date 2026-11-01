@@ -579,10 +579,10 @@
         id: "prob1",
         badge: "Level 2-1",
         badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
-        title: "線分の交点と2組の辺（対頂角）",
-        text: "線分ABと線分CDが点Oで交わっており、OA = OB, OD = OC である。このとき、△AOD ≡ △BOC であることを証明しなさい。",
+        title: "線分の交点と2組の辺・対応する辺（AD＝BC）",
+        text: "線分ABと線分CDが点Oで交わっており、OA = OB, OD = OC である。このとき、AD = BC であることを証明しなさい。",
         hypotheses: ["OA = OB", "OD = OC", "対頂角は等しい"],
-        conclusion: "△AOD ≡ △BOC",
+        conclusion: "AD = BC",
         tri1: "AOD",
         tri2: "BOC",
         condition: "2組の辺とその間の角がそれぞれ等しい",
@@ -1342,6 +1342,7 @@
       const eqOptions = [
         "選択してください",
         ...currentProblem.reasons.map(r => r.eq),
+        ...(!currentProblem.conclusion.includes("△") ? [currentProblem.conclusion] : []),
         `${p1[0]}${p1[1]} = ${p2[0]}${p2[2]}`,
         `${p1[1]}${p1[2]} = ${p2[0]}${p2[1]}`,
         `∠${p1} = ∠${p2Perm}`
@@ -2115,7 +2116,11 @@
         });
 
         if (!matchedExp) {
-          reasonErrors.push(`・<strong>${pair.num}の等式『${pair.e}』</strong>：図や対応する頂点の順番をよく見てみよう。この問題で等しいと言えるペアになっているかな？`);
+          if (!prob.conclusion.includes("△") && pair.e.replace(/\s+/g, "") === prob.conclusion.replace(/\s+/g, "")) {
+            reasonErrors.push(`・<strong>${pair.num}の等式『${pair.e}』</strong>：これはこれから証明したい【結論】そのものなので、途中の根拠には使えません！最初から分かっている仮定の式を選ぼう！`);
+          } else {
+            reasonErrors.push(`・<strong>${pair.num}の等式『${pair.e}』</strong>：図や対応する頂点の順番をよく見てみよう。この問題で等しいと言えるペアになっているかな？`);
+          }
           return;
         }
 
