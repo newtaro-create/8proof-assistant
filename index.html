@@ -1799,8 +1799,16 @@
           carriedReasonUsed = true;
         }
 
+        const congLineIdx = triCongLine ? lines.indexOf(triCongLine) : -1;
+        const currLineIdx = lines.indexOf(line);
+        // Any line appearing AFTER the triangle congruence line (△... ≡ △...) belongs to the post-congruence conclusion section, not the pre-congruence reasons!
+        if (congLineIdx !== -1 && currLineIdx > congLineIdx) {
+          return;
+        }
+        // Also if student skipped △... ≡ △... but wrote the final conclusion right after a congruence condition or with よって/したがって/対応する辺
+        const condLineIdx = lines.findIndex(l => l.includes("組の辺") || l.includes("組の角"));
         const isFinalConclusionLine = (!prob.conclusion.includes("△") && line.replace(/\s+/g, "").replace(/＝/g, "=").toUpperCase().includes(prob.conclusion.replace(/\s+/g, "").toUpperCase()));
-        if (isFinalConclusionLine && (line.includes("よって") || line.includes("したがって") || line.includes("ゆえに") || lines.indexOf(line) > lines.indexOf(triCongLine))) {
+        if (isFinalConclusionLine && (line.includes("よって") || line.includes("したがって") || line.includes("ゆえに") || (condLineIdx !== -1 && currLineIdx > condLineIdx))) {
           return;
         }
 
@@ -1834,6 +1842,20 @@
               } else if (rCheck.severity === "missing_reason") {
                 brushUpTips.push(rCheck.msg);
               }
+            }
+          }
+        });
+
+        // Detect ambiguous 1-letter angle equality (e.g. ∠O = ∠O, ∠M = ∠M, ∠E = ∠E) at multi-angle intersection vertices
+        const oneLetterAngMatches = [...line.matchAll(/∠\s*([A-Za-z])\s*[=＝]\s*∠\s*([A-Za-z])(?![A-Za-z])/g)];
+        oneLetterAngMatches.forEach(om => {
+          const v1 = om[1].toUpperCase(), v2 = om[2].toUpperCase();
+          if (v1 === v2 && ["O", "M", "E", "C", "D"].includes(v1)) {
+            const hasCommonAngAtV = prob.reasons.some(r => r.type.includes("共通") && r.side === "角" && r.eq.includes(v1));
+            if (!hasCommonAngAtV) {
+              const targetAngleExp = prob.reasons.find(r => r.side === "角" && r.eq.includes(v1));
+              hasAngleCorrError = true;
+              logicErrors.push(`⚠️ <strong>角の表し方の見直し（∠${v1} = ∠${v2}）</strong>：点${v1}のまわりには複数の角が集まっているため、『∠${v1}』と1文字だけで書くとどの角か特定できません。${targetAngleExp ? `<strong>『${targetAngleExp.eq}』</strong>のように` : ""}3つのアルファベットを使って角を表そう！`);
             }
           }
         });
@@ -1950,11 +1972,18 @@
               const L = targetParts[0], R = targetParts[1];
               const Lr = L[1]+L[0], Rr = R[1]+R[0];
               const afterCongText = lines.slice(lines.indexOf(triCongLine)).join("\n").replace(/\s+/g, "").replace(/＝/g, "=").toUpperCase();
-              const hasFinalSide = [
-                `${L}=${R}`, `${Lr}=${Rr}`, `${R}=${L}`, `${Rr}=${Lr}`,
+              const exactFinalSide = afterCongText.includes(`${L}=${R}`);
+              const variantFinalSide = [
+                `${Lr}=${Rr}`, `${R}=${L}`, `${Rr}=${Lr}`,
                 `${L}=${Rr}`, `${Lr}=${R}`
               ].some(p => afterCongText.includes(p));
+              const hasFinalSide = exactFinalSide || variantFinalSide;
               const hasCorrSideReason = cleanProof.includes("対応する辺") || cleanProof.includes("合同な図形");
+
+              if (variantFinalSide && !exactFinalSide) {
+                brushUpTips.push(`💡 <strong>結論の表記を問題文に揃えよう</strong>：結論の辺は、問題文で問われている通りに<strong>『${prob.conclusion}』</strong>の順で結ぶと、テストでも減点されない完璧な答案になります！`);
+              }
+
               if (hasFinalSide && hasCorrSideReason) {
                 isConclusionOk = true;
               } else if (hasFinalSide && !hasCorrSideReason) {
@@ -1969,7 +1998,16 @@
           }
         }
       } else {
-        conclusionMsg = `・最後に合同記号『≡』を使って『△… ≡ △…』と結論を結びましょう。`;
+        if (!prob.conclusion.includes("△")) {
+          const targetClean = prob.conclusion.replace(/\s+/g, "").toUpperCase();
+          if (cleanProof.replace(/＝/g, "=").toUpperCase().includes(targetClean)) {
+            logicErrors.push(`⚠️ <strong>結論へのつなぎ方の見直し</strong>：合同条件からいきなり『${prob.conclusion}』へ飛んでしまっています！まず<strong>『△${prob.tri1} ≡ △${prob.tri2}』</strong>と三角形の合同を書き、続けて<strong>『合同な図形の対応する辺は等しいから、${prob.conclusion}』</strong>と2段階で結ぼう！`);
+          } else {
+            conclusionMsg = `・まず合同記号『≡』を使って『△${prob.tri1} ≡ △${prob.tri2}』と結び、続けて『合同な図形の対応する辺は等しいから、${prob.conclusion}』と結論を導きましょう。`;
+          }
+        } else {
+          conclusionMsg = `・最後に合同記号『≡』を使って『△… ≡ △…』と結論を結びましょう。`;
+        }
       }
 
       return {
